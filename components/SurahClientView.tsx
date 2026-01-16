@@ -15,20 +15,7 @@ import {
 import AyahBookmark from "@/components/AyahBookmark";
 import { Badge } from "./ui/badge";
 
-interface Surah {
-  surahName: string;
-  surahNameArabic: string;
-  surahNameArabicLong: string;
-  surahNameTranslation: string;
-  revelationPlace: string;
-  totalAyah: number;
-  surahNo: number;
-  audio: Record<string, { reciter: string; url: string }>;
-  arabic1: string[];
-  bengali: string[];
-}
-
-export default function SurahClientView({ surah }: { surah: Surah }) {
+export default function SurahClientView({ surah }: { surah: any }) {
   const [reciter, setReciter] = useState<string>(
     Object.keys(surah.audio)[0] || ""
   );
@@ -54,17 +41,17 @@ export default function SurahClientView({ surah }: { surah: Surah }) {
       audio.onended = () => setPlayingAyah(null);
     }
   };
-
   return (
     <div className="min-h-screen p-4 sm:p-6 lg:p-8">
       <div className="max-w-4xl mx-auto">
         <div className="fixed w-full left-0 right-0 top-16">
-          <Card className="rounded-none dark:bg-gray-800 p-4 rounded-br-2xl rounded-bl-2xl flex-row flex justify-between items-center max-w-4xl mx-auto">
+          <Card className="rounded-none dark:bg-gray-800 p-4 rounded-br-2xl rounded-bl-2xl flex-row flex flex-wrap justify-between items-center max-w-4xl mx-auto">
             {/* Back Button */}
             <Link href="/">
               <Button variant="outline" className="group">
                 <ChevronLeft className="w-4 h-4 mr-1 group-hover:-translate-x-1 transition-transform" />
-                সূরা তালিকায় ফিরুন
+                <span className="hidden md:inline">সূরা তালিকায় ফিরুন</span>
+                <span className="md:hidden">Back</span>
               </Button>
             </Link>
             {/* Reciter Selector using Shadcn Select */}
@@ -74,11 +61,13 @@ export default function SurahClientView({ surah }: { surah: Surah }) {
                   <SelectValue placeholder="পাঠক নির্বাচন করুন" />
                 </SelectTrigger>
                 <SelectContent>
-                  {Object.entries(surah.audio).map(([key, value]) => (
-                    <SelectItem key={key} value={key}>
-                      {value.reciter}
-                    </SelectItem>
-                  ))}
+                  {Object.entries(surah.audio).map(
+                    ([key, value]: [string, any]) => (
+                      <SelectItem key={key} value={key}>
+                        {value?.reciter}
+                      </SelectItem>
+                    )
+                  )}
                 </SelectContent>
               </Select>
             )}
@@ -87,16 +76,18 @@ export default function SurahClientView({ surah }: { surah: Surah }) {
         {/* Surah Header */}
         <Card className="mb-6 mt-16 rounded-2xl border-emerald-500/20 dark:bg-gray-800">
           <CardHeader className="text-center space-y-4 pb-6">
-            <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+            <div className="w-16 h-16 mx-auto rounded-full flex items-center bg-emerald-600 justify-center text-white text-2xl font-bold shadow-lg">
               {surah.surahNo}
             </div>
 
             <CardTitle className="text-3xl sm:text-4xl leading-loose">
               {surah.surahNameArabicLong || surah.surahNameArabic}
             </CardTitle>
-
-            <p className="text-xl text-gray-700 dark:text-gray-300 font-semibold">
-              {surah.surahNameTranslation}
+            <p className="text-2xl font-semibold">
+              {surah.nameTransliteration}
+              <span className="text-xl ms-2  font-semibold">
+                ({surah.surahNameTranslation})
+              </span>
             </p>
           </CardHeader>
 
@@ -123,7 +114,10 @@ export default function SurahClientView({ surah }: { surah: Surah }) {
         {surah.surahNo !== 1 && surah.surahNo !== 9 && (
           <div className="text-center mb-8">
             <p className="text-3xl sm:text-4xl text-gray-800 dark:text-gray-200 leading-loose">
-              بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+              {surah.preBismillah.text.arab}
+            </p>
+            <p className="text-xl text-gray-600 dark:text-gray-400 mt-2">
+              {surah.preBismillah.text.transliteration.en}
             </p>
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
               পরম করুণাময় অসীম দয়ালু আল্লাহর নামে
@@ -133,9 +127,8 @@ export default function SurahClientView({ surah }: { surah: Surah }) {
 
         {/* Ayahs */}
         <div className="space-y-6">
-          {surah.arabic1.map((ayah, index) => {
+          {surah.arabic1.map((ayah: any, index: number) => {
             const ayahNumber = index + 1;
-
             return (
               <Card
                 key={index}
@@ -178,18 +171,7 @@ export default function SurahClientView({ surah }: { surah: Surah }) {
                       />
                     </div>
                   </div>
-
-                  {/* Arabic Text */}
-                  <p className="text-2xl sm:text-3xl text-right leading-loose font-arabic text-gray-900 dark:text-gray-100 mb-4">
-                    {ayah}
-                  </p>
-
-                  {/* Bengali Translation */}
-                  <div className="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-4">
-                    <p className="text-base sm:text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
-                      {surah.bengali[index]}
-                    </p>
-                  </div>
+                  <AyahViewer ayah={ayah} surah={surah} index={index} />
                 </CardContent>
               </Card>
             );
@@ -219,3 +201,74 @@ export default function SurahClientView({ surah }: { surah: Surah }) {
     </div>
   );
 }
+
+const AyahViewer = ({
+  ayah,
+  surah,
+  index,
+}: {
+  ayah: string;
+  surah: any;
+  index: number;
+}) => {
+  const [wordByWord, setWordByWord] = useState(false);
+  const toggleView = () => setWordByWord((prev) => !prev);
+  const verse = surah.verses[index];
+  const arabicWords = ayah.match(/[\u0600-\u06FF]+[^\u0600-\u06FF\s]*/g) || [
+    ayah,
+  ];
+  const translitWords = verse.text.transliteration.en.split(/\s+/);
+
+  return (
+    <div>
+      <div className="flex justify-end mb-4">
+        <button
+          onClick={toggleView}
+          className="px-3 py-1 text-sm font-medium text-emerald-700 dark:text-emerald-300 border border-emerald-500 dark:border-emerald-400 rounded hover:bg-emerald-50 dark:hover:bg-emerald-900 transition"
+        >
+          {wordByWord ? "Normal View" : "Word-by-Word"}
+        </button>
+      </div>
+      <div className="text-right mb-2 font-arabic text-2xl sm:text-3xl leading-loose text-gray-900 dark:text-gray-100">
+        {wordByWord ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+            {arabicWords.map((word, i) => (
+              <div
+                key={i}
+                className="flex flex-col items-center p-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm"
+              >
+                <div className="font-arabic text-2xl mb-2">{word}</div>
+                <div className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
+                  {translitWords[i] || ""}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div dir="rtl" className="rtl">
+            {ayah}
+          </div>
+        )}
+      </div>
+
+      {!wordByWord && (
+        <p
+          className="text-right text-base sm:text-lg text-gray-600 dark:text-gray-400 italic mb-4"
+          dir="ltr"
+        >
+          {verse.translation.en}
+        </p>
+      )}
+
+      {!wordByWord && (
+        <p
+          className="text-right text-gray-800 dark:text-gray-200 leading-relaxed"
+          dir="rtl"
+          style={{ textAlign: "right" }}
+        >
+          {surah.bengali[index]}
+        </p>
+      )}
+    </div>
+  );
+};

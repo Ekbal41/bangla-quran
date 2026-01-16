@@ -7,10 +7,23 @@ interface PageProps {
 export default async function SurahPage({ params }: PageProps) {
   const { id } = await params;
 
-  const res = await fetch(`https://quranapi.pages.dev/api/${id}.json`, {
+  const res1 = await fetch(`https://quranapi.pages.dev/api/${id}.json`, {
     cache: "force-cache",
   });
-  const surah: any = await res.json();
+  const api1Data: any = await res1.json();
 
-  return <SurahClientView surah={surah} />;
+  const res2 = await fetch(`https://api.quran.gading.dev/surah/${id}`, {
+    cache: "force-cache",
+  });
+  const api2Data: any = await res2.json();
+
+  const surahData = {
+    ...api1Data,
+    nameTransliteration: api2Data.data.name.transliteration.en,
+    tafsirInEnglish: api2Data.data.tafsir.id,
+    preBismillah: api2Data.data.preBismillah,
+    verses: api2Data.data.verses,
+  };
+
+  return <SurahClientView surah={surahData} />;
 }
