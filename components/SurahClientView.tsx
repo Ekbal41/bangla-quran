@@ -1,18 +1,18 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ChevronLeft, MapPin, BookOpen } from "lucide-react";
+import { ChevronLeft, MapPin, BookOpen, Book } from "lucide-react";
 import AyahBookmark from "@/components/AyahBookmark";
-import { Badge } from "./ui/badge";
 import AyahViewer from "./AyahViewer";
 import PlayAyah from "./PlayAyah";
+import { toBengaliNumber } from "@/lib/utils";
 
 export default function SurahClientView({ surah }: { surah: any }) {
   return (
     <div className="min-h-screen p-4 sm:p-6 lg:p-8">
       <div className="max-w-4xl mx-auto">
         <div className="fixed w-full left-0 right-0 top-16">
-          <Card className="rounded-none dark:bg-gray-800 p-4 rounded-br-2xl rounded-bl-2xl flex-row flex flex-wrap justify-between items-center max-w-4xl mx-auto">
+          <Card className="rounded-none dark:bg-gray-800 p-4 rounded-br-xl rounded-bl-xl flex-row flex flex-wrap justify-between items-center max-w-4xl mx-auto">
             {/* Back Button */}
             <Link href="/" prefetch>
               <Button variant="outline" className="group">
@@ -21,13 +21,17 @@ export default function SurahClientView({ surah }: { surah: any }) {
                 <span className="md:hidden">Back</span>
               </Button>
             </Link>
+            <p className="text-lg font-semibold flex items-center">
+              <Book className="w-5 h-5 inline-block mr-2 text-emerald-600 dark:text-emerald-400" />
+              {surah.surahNameTranslation}
+            </p>
           </Card>
         </div>
         {/* Surah Header */}
-        <Card className="mb-6 mt-16 rounded-2xl border-emerald-500/20 dark:bg-gray-800">
+        <Card className="mb-6 mt-18 md:mt-16">
           <CardHeader className="text-center space-y-4 pb-6">
-            <div className="w-16 h-16 mx-auto rounded-full flex items-center bg-emerald-600 justify-center text-white text-2xl font-bold shadow-lg">
-              {surah.surahNo}
+            <div className="w-16 h-16 mx-auto rounded-full flex items-center bg-emerald-600 justify-center text-white text-2xl font-bold">
+              {toBengaliNumber(surah.surahNo)}
             </div>
 
             <CardTitle className="text-3xl sm:text-4xl leading-loose">
@@ -82,19 +86,16 @@ export default function SurahClientView({ surah }: { surah: any }) {
             return (
               <Card
                 key={index}
-                className="group hover:shadow-xl transition-all duration-300 dark:bg-gray-800 rounded-none border-l-4 border-l-emerald-500"
+                className="group hover:shadow-xl transition-all duration-300 dark:bg-gray-800"
                 id={"ayah-" + ayahNumber}
                 title={"ayah-" + ayahNumber}
               >
                 <CardContent className="px-6 space-y-4">
                   {/* Ayah Number & Actions */}
                   <div className="flex items-center justify-between mb-4">
-                    <Badge
-                      className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400"
-                      variant={"outline"}
-                    >
-                      {ayahNumber}
-                    </Badge>
+                    <p className="text-2xl font-bold">
+                      {toBengaliNumber(ayahNumber)}
+                    </p>
                     <div className="flex items-center gap-3">
                       <PlayAyah audio={ayah?.audio} />
                       <AyahBookmark

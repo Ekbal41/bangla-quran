@@ -9,6 +9,7 @@ import Link from "next/link";
 import { BookOpen, MapPin } from "lucide-react";
 import BookmarkButton from "@/components/BookmarkButton";
 import { Badge } from "@/components/ui/badge";
+import { toBengaliNumber } from "@/lib/utils";
 
 export default async function Home() {
   const res = await fetch("https://quranapi.pages.dev/api/surah.json", {
@@ -41,18 +42,18 @@ export default async function Home() {
                   <div className="flex-1">
                     <div className="flex items-center justify-between gap-2 mb-2">
                       <Badge
-                        className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400"
+                        className="bg-emerald-100 text-xl min-w-9 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400"
                         variant={"outline"}
                       >
-                        {index + 1}
+                        {toBengaliNumber(index + 1)}
                       </Badge>
                       <BookmarkButton surahNo={index + 1} />
                     </div>
                     <CardTitle className="text-xl sm:text-2xl text-right leading-loose">
                       {s.surahNameArabic}
                     </CardTitle>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                      {s.surahNameTranslation}
+                    <p className="text-lg font-semibold text-right mt-1">
+                      {s.surahName}
                     </p>
                   </div>
                 </div>
