@@ -62,7 +62,7 @@ export default function AyahBookmark({
       className={`${
         isBookmarked
           ? "text-yellow-600 hover:text-yellow-700 dark:text-yellow-500"
-          : "text-gray-700 hover:text-gray-600 dark:text-gray-200"
+          : ""
       }`}
     >
       <Bookmark className={`size-4 ${isBookmarked ? "fill-current" : ""}`} />{" "}

@@ -1,47 +1,13 @@
-// "use client";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ChevronLeft, MapPin, BookOpen, Play, Pause } from "lucide-react";
-// import { useState, useRef } from "react";
-// import {
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select";
+import { ChevronLeft, MapPin, BookOpen } from "lucide-react";
 import AyahBookmark from "@/components/AyahBookmark";
 import { Badge } from "./ui/badge";
 import AyahViewer from "./AyahViewer";
+import PlayAyah from "./PlayAyah";
 
 export default function SurahClientView({ surah }: { surah: any }) {
-  // const [reciter, setReciter] = useState<string>(
-  //   Object.keys(surah.audio)[0] || ""
-  // );
-  // const [playingAyah, setPlayingAyah] = useState<number | null>(null);
-  // const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  // const togglePlay = (ayahNumber: number) => {
-  //   const url = surah.audio[ayahNumber]?.url;
-  //   if (!url) return;
-
-  //   if (playingAyah === ayahNumber) {
-  //     audioRef.current?.pause();
-  //     setPlayingAyah(null);
-  //   } else {
-  //     if (audioRef.current) {
-  //       audioRef.current.pause();
-  //     }
-  //     const audio = new Audio(url);
-  //     audioRef.current = audio;
-  //     audio.play();
-  //     setPlayingAyah(ayahNumber);
-
-  //     audio.onended = () => setPlayingAyah(null);
-  //   }
-  // };
   return (
     <div className="min-h-screen p-4 sm:p-6 lg:p-8">
       <div className="max-w-4xl mx-auto">
@@ -55,23 +21,6 @@ export default function SurahClientView({ surah }: { surah: any }) {
                 <span className="md:hidden">Back</span>
               </Button>
             </Link>
-            {/* Reciter Selector using Shadcn Select */}
-            {/* {Object.keys(surah.audio).length > 1 && (
-              <Select value={reciter} onValueChange={setReciter}>
-                <SelectTrigger className="w-fit bg-white">
-                  <SelectValue placeholder="পাঠক নির্বাচন করুন" />
-                </SelectTrigger>
-                <SelectContent>
-                  {Object.entries(surah.audio).map(
-                    ([key, value]: [string, any]) => (
-                      <SelectItem key={key} value={key}>
-                        {value?.reciter}
-                      </SelectItem>
-                    )
-                  )}
-                </SelectContent>
-              </Select>
-            )} */}
           </Card>
         </div>
         {/* Surah Header */}
@@ -146,25 +95,7 @@ export default function SurahClientView({ surah }: { surah: any }) {
                     </Badge>
 
                     <div className="flex items-center gap-3">
-                      {/* Play/Pause Icon */}
-                      {surah.audio[ayahNumber] && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="flex items-center gap-1"
-                          // onClick={() => togglePlay(ayahNumber)}
-                        >
-                          {/* {playingAyah === ayahNumber ? (
-                            <>
-                              <Pause className="w-4 h-4" /> বিরতি
-                            </>
-                          ) : (
-                            <>
-                              <Play className="w-4 h-4" /> চালু করুন
-                            </>
-                          )} */}
-                        </Button>
-                      )}
+                      <PlayAyah audio={surah.verses[ayahNumber]?.audio} />
                       <AyahBookmark
                         surahNo={surah.surahNo}
                         ayahNo={ayahNumber}
