@@ -73,7 +73,11 @@ export default async function Home() {
 
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Link href={`/surah/${index + 1}`} className="block">
+                    <Link
+                      href={`/surah/${index + 1}`}
+                      className="block"
+                      prefetch
+                    >
                       <Button className="w-full dark:text-gray-200 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-700 dark:hover:bg-emerald-600 transition-colors">
                         সূরা পড়ুন
                       </Button>

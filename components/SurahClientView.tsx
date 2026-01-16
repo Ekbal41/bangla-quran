@@ -47,7 +47,7 @@ export default function SurahClientView({ surah }: { surah: any }) {
         <div className="fixed w-full left-0 right-0 top-16">
           <Card className="rounded-none dark:bg-gray-800 p-4 rounded-br-2xl rounded-bl-2xl flex-row flex flex-wrap justify-between items-center max-w-4xl mx-auto">
             {/* Back Button */}
-            <Link href="/">
+            <Link href="/" prefetch>
               <Button variant="outline" className="group">
                 <ChevronLeft className="w-4 h-4 mr-1 group-hover:-translate-x-1 transition-transform" />
                 <span className="hidden md:inline">সূরা তালিকায় ফিরুন</span>
@@ -181,7 +181,7 @@ export default function SurahClientView({ surah }: { surah: any }) {
         {/* Navigation */}
         <div className="flex justify-between mt-8 gap-4">
           {surah.surahNo > 1 && (
-            <Link href={`/surah/${surah.surahNo - 1}`}>
+            <Link href={`/surah/${surah.surahNo - 1}`} prefetch>
               <Button variant="outline" className="flex-1">
                 <ChevronLeft className="w-4 h-4 mr-1" />
                 পূর্ববর্তী সূরা
@@ -189,7 +189,11 @@ export default function SurahClientView({ surah }: { surah: any }) {
             </Link>
           )}
           {surah.surahNo < 114 && (
-            <Link href={`/surah/${surah.surahNo + 1}`} className="ml-auto">
+            <Link
+              href={`/surah/${surah.surahNo + 1}`}
+              className="ml-auto"
+              prefetch
+            >
               <Button variant="outline" className="flex-1">
                 পরবর্তী সূরা
                 <ChevronLeft className="w-4 h-4 ml-1 rotate-180" />

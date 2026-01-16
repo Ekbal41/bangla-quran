@@ -63,17 +63,21 @@ export default function Navbar() {
           <Link
             href="/"
             className="flex items-center space-x-3 hover:opacity-80 transition"
+            prefetch
           >
             <Book className="w-8 h-8" />
             <span className="text-xl font-bold hidden sm:block">
-              আল-কুরআন করিম
+              আল-কুরআন করিম V1
             </span>
           </Link>
 
           {/* Navigation Links */}
           <div className="flex items-center space-x-2 sm:space-x-4">
             <Link href="/">
-              <Button variant="ghost" className="text-white hover:text-white hover:bg-white/10">
+              <Button
+                variant="ghost"
+                className="text-white hover:text-white hover:bg-white/10"
+              >
                 <Home className="w-5 h-5 sm:mr-2" />
                 <span className="hidden sm:inline">হোম</span>
               </Button>
