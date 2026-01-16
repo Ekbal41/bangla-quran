@@ -16,7 +16,7 @@ export default function Navbar() {
           >
             <Book className="w-8 h-8" />
             <span className="text-xl font-bold hidden sm:block">
-              আল-কুরআন করিম V28bgh
+              আল-কুরআন করিম
             </span>
           </Link>
 

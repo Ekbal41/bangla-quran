@@ -7,7 +7,6 @@ import { useRef, useState } from "react";
 export default function PlayAyah({ audio }: { audio: any }) {
   const [playingAyah, setPlayingAyah] = useState<boolean | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-
   const togglePlay = () => {
     const url = audio?.primary;
     if (!url) return;

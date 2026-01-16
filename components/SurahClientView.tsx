@@ -77,12 +77,14 @@ export default function SurahClientView({ surah }: { surah: any }) {
 
         {/* Ayahs */}
         <div className="space-y-6">
-          {surah.arabic1.map((ayah: any, index: number) => {
+          {surah.verses.map((ayah: any, index: number) => {
             const ayahNumber = index + 1;
             return (
               <Card
                 key={index}
                 className="group hover:shadow-xl transition-all duration-300 dark:bg-gray-800 rounded-none border-l-4 border-l-emerald-500"
+                id={"ayah-" + ayahNumber}
+                title={"ayah-" + ayahNumber}
               >
                 <CardContent className="px-6 space-y-4">
                   {/* Ayah Number & Actions */}
@@ -93,9 +95,8 @@ export default function SurahClientView({ surah }: { surah: any }) {
                     >
                       {ayahNumber}
                     </Badge>
-
                     <div className="flex items-center gap-3">
-                      <PlayAyah audio={surah.verses[ayahNumber]?.audio} />
+                      <PlayAyah audio={ayah?.audio} />
                       <AyahBookmark
                         surahNo={surah.surahNo}
                         ayahNo={ayahNumber}
@@ -103,7 +104,11 @@ export default function SurahClientView({ surah }: { surah: any }) {
                       />
                     </div>
                   </div>
-                  <AyahViewer ayah={ayah} surah={surah} index={index} />
+                  <AyahViewer
+                    ayah={ayah?.text.arab}
+                    surah={surah}
+                    index={index}
+                  />
                 </CardContent>
               </Card>
             );
