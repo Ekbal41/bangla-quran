@@ -1,46 +1,47 @@
-"use client";
+// "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ChevronLeft, MapPin, BookOpen, Play, Pause } from "lucide-react";
-import { useState, useRef } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+// import { useState, useRef } from "react";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
 import AyahBookmark from "@/components/AyahBookmark";
 import { Badge } from "./ui/badge";
+import AyahViewer from "./AyahViewer";
 
 export default function SurahClientView({ surah }: { surah: any }) {
-  const [reciter, setReciter] = useState<string>(
-    Object.keys(surah.audio)[0] || ""
-  );
-  const [playingAyah, setPlayingAyah] = useState<number | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  // const [reciter, setReciter] = useState<string>(
+  //   Object.keys(surah.audio)[0] || ""
+  // );
+  // const [playingAyah, setPlayingAyah] = useState<number | null>(null);
+  // const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const togglePlay = (ayahNumber: number) => {
-    const url = surah.audio[ayahNumber]?.url;
-    if (!url) return;
+  // const togglePlay = (ayahNumber: number) => {
+  //   const url = surah.audio[ayahNumber]?.url;
+  //   if (!url) return;
 
-    if (playingAyah === ayahNumber) {
-      audioRef.current?.pause();
-      setPlayingAyah(null);
-    } else {
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
-      const audio = new Audio(url);
-      audioRef.current = audio;
-      audio.play();
-      setPlayingAyah(ayahNumber);
+  //   if (playingAyah === ayahNumber) {
+  //     audioRef.current?.pause();
+  //     setPlayingAyah(null);
+  //   } else {
+  //     if (audioRef.current) {
+  //       audioRef.current.pause();
+  //     }
+  //     const audio = new Audio(url);
+  //     audioRef.current = audio;
+  //     audio.play();
+  //     setPlayingAyah(ayahNumber);
 
-      audio.onended = () => setPlayingAyah(null);
-    }
-  };
+  //     audio.onended = () => setPlayingAyah(null);
+  //   }
+  // };
   return (
     <div className="min-h-screen p-4 sm:p-6 lg:p-8">
       <div className="max-w-4xl mx-auto">
@@ -55,7 +56,7 @@ export default function SurahClientView({ surah }: { surah: any }) {
               </Button>
             </Link>
             {/* Reciter Selector using Shadcn Select */}
-            {Object.keys(surah.audio).length > 1 && (
+            {/* {Object.keys(surah.audio).length > 1 && (
               <Select value={reciter} onValueChange={setReciter}>
                 <SelectTrigger className="w-fit bg-white">
                   <SelectValue placeholder="পাঠক নির্বাচন করুন" />
@@ -70,7 +71,7 @@ export default function SurahClientView({ surah }: { surah: any }) {
                   )}
                 </SelectContent>
               </Select>
-            )}
+            )} */}
           </Card>
         </div>
         {/* Surah Header */}
@@ -151,9 +152,9 @@ export default function SurahClientView({ surah }: { surah: any }) {
                           variant="outline"
                           size="sm"
                           className="flex items-center gap-1"
-                          onClick={() => togglePlay(ayahNumber)}
+                          // onClick={() => togglePlay(ayahNumber)}
                         >
-                          {playingAyah === ayahNumber ? (
+                          {/* {playingAyah === ayahNumber ? (
                             <>
                               <Pause className="w-4 h-4" /> বিরতি
                             </>
@@ -161,7 +162,7 @@ export default function SurahClientView({ surah }: { surah: any }) {
                             <>
                               <Play className="w-4 h-4" /> চালু করুন
                             </>
-                          )}
+                          )} */}
                         </Button>
                       )}
                       <AyahBookmark
@@ -205,74 +206,3 @@ export default function SurahClientView({ surah }: { surah: any }) {
     </div>
   );
 }
-
-const AyahViewer = ({
-  ayah,
-  surah,
-  index,
-}: {
-  ayah: string;
-  surah: any;
-  index: number;
-}) => {
-  const [wordByWord, setWordByWord] = useState(false);
-  const toggleView = () => setWordByWord((prev) => !prev);
-  const verse = surah.verses[index];
-  const arabicWords = ayah.match(/[\u0600-\u06FF]+[^\u0600-\u06FF\s]*/g) || [
-    ayah,
-  ];
-  const translitWords = verse.text.transliteration.en.split(/\s+/);
-
-  return (
-    <div>
-      <div className="flex justify-end mb-4">
-        <button
-          onClick={toggleView}
-          className="px-3 py-1 text-sm font-medium text-emerald-700 dark:text-emerald-300 border border-emerald-500 dark:border-emerald-400 rounded hover:bg-emerald-50 dark:hover:bg-emerald-900 transition"
-        >
-          {wordByWord ? "Normal View" : "Word-by-Word"}
-        </button>
-      </div>
-      <div className="text-right mb-2 font-arabic text-2xl sm:text-3xl leading-loose text-gray-900 dark:text-gray-100">
-        {wordByWord ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-            {arabicWords.map((word, i) => (
-              <div
-                key={i}
-                className="flex flex-col items-center p-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm"
-              >
-                <div className="font-arabic text-2xl mb-2">{word}</div>
-                <div className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
-                  {translitWords[i] || ""}
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div dir="rtl" className="rtl">
-            {ayah}
-          </div>
-        )}
-      </div>
-
-      {!wordByWord && (
-        <p
-          className="text-right text-base sm:text-lg text-gray-600 dark:text-gray-400 italic mb-4"
-          dir="ltr"
-        >
-          {verse.translation.en}
-        </p>
-      )}
-
-      {!wordByWord && (
-        <p
-          className="text-right text-gray-800 dark:text-gray-200 leading-relaxed"
-          dir="rtl"
-          style={{ textAlign: "right" }}
-        >
-          {surah.bengali[index]}
-        </p>
-      )}
-    </div>
-  );
-};
