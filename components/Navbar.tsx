@@ -6,28 +6,32 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
 export default function Navbar() {
-  const [darkMode, setDarkMode] = useState(false);
-  const [bookmarkCount, setBookmarkCount] = useState(0);
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("darkMode") === "true";
+    }
+    return false;
+  });
+  const [bookmarkCount, setBookmarkCount] = useState(() => {
+    if (typeof window !== "undefined") {
+      const bookmarks = JSON.parse(
+        localStorage.getItem("quran-bookmarks") || "[]"
+      );
+      return bookmarks.length;
+    }
+  });
 
   useEffect(() => {
-    // Check dark mode on mount
     const isDark = localStorage.getItem("darkMode") === "true";
-    setDarkMode(isDark);
     if (isDark) {
       document.documentElement.classList.add("dark");
     }
 
-    // Check bookmarks on mount
-    const bookmarks = JSON.parse(
-      localStorage.getItem("quran-bookmarks") || "[]"
-    );
-    setBookmarkCount(bookmarks.length);
-
     const handleStorage = () => {
-      const updatedBookmarks = JSON.parse(
+      const bookmarks = JSON.parse(
         localStorage.getItem("quran-bookmarks") || "[]"
       );
-      setBookmarkCount(updatedBookmarks.length);
+      setBookmarkCount(bookmarks.length);
     };
 
     window.addEventListener("storage", handleStorage);
@@ -63,13 +67,13 @@ export default function Navbar() {
           >
             <Book className="w-8 h-8" />
             <span className="text-xl font-bold hidden sm:block">
-              আল-কুরআন করিম V3
+              আল-কুরআন করিম V2
             </span>
           </Link>
 
           {/* Navigation Links */}
           <div className="flex items-center space-x-2 sm:space-x-4">
-            <Link href="/" prefetch>
+            <Link href="/">
               <Button
                 variant="ghost"
                 className="text-white hover:text-white hover:bg-white/10"
@@ -79,7 +83,7 @@ export default function Navbar() {
               </Button>
             </Link>
 
-            <Link href="/bookmarks" prefetch>
+            <Link href="/bookmarks">
               <Button
                 variant="ghost"
                 className="text-white hover:text-white hover:bg-white/10 relative"

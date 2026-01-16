@@ -1,9 +1,7 @@
-import SurahView from "@/components/SurahView";
-import { Suspense } from "react";
-import Loading from "../loading";
+import SurahClientView from "@/components/SurahClientView";
 
 interface PageProps {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }
 
 export async function generateStaticParams() {
@@ -12,9 +10,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export const dynamicParams = false;
+export default async function SurahPage({ params }: PageProps) {
+  const { id } = await params;
 
-async function getSurahData(id: string) {
   const [res1, res2] = await Promise.all([
     fetch(`https://quranapi.pages.dev/api/${id}.json`, {
       cache: "force-cache",
@@ -24,22 +22,13 @@ async function getSurahData(id: string) {
 
   const [api1Data, api2Data] = await Promise.all([res1.json(), res2.json()]);
 
-  return {
+  const surahData = {
     ...api1Data,
     nameTransliteration: api2Data.data.name.transliteration.en,
     tafsirInEnglish: api2Data.data.tafsir.id,
     preBismillah: api2Data.data.preBismillah,
     verses: api2Data.data.verses,
   };
-}
 
-export default async function SurahPage({ params }: PageProps) {
-  const { id } = await params;
-  const surahData = await getSurahData(id);
-
-  return (
-    <Suspense fallback={<Loading />}>
-      <SurahView surah={surahData} />
-    </Suspense>
-  );
+  return <SurahClientView surah={surahData} />;
 }
