@@ -10,12 +10,19 @@ export default function AyahList({ surah }: any) {
   const rowVirtualizer = useVirtualizer({
     count: surah.verses.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 200,
+    estimateSize: () => 150,
     overscan: 5,
   });
 
   return (
-    <div ref={parentRef} className="w-full">
+    <div
+      ref={parentRef}
+      className="h-[calc(100vh-64px)] overflow-y-auto scrollbar-hide"
+      style={{
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
+      }}
+    >
       <div
         style={{
           height: `${rowVirtualizer.getTotalSize()}px`,
@@ -27,7 +34,6 @@ export default function AyahList({ surah }: any) {
           const index = virtualRow.index;
           const ayah = surah.verses[index];
           const ayahNumber = index + 1;
-
           return (
             <div
               key={`${surah.surahNo}-${ayahNumber}`}
@@ -40,7 +46,7 @@ export default function AyahList({ surah }: any) {
                 width: "100%",
                 transform: `translateY(${virtualRow.start}px)`,
               }}
-              className="pb-4"
+              className="pb-4 md:pb-6"
             >
               <AyahCard
                 ayah={ayah}

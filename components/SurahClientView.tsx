@@ -35,7 +35,9 @@ export default function SurahClientView({ surah }: { surah: any }) {
                 </div>
               }
             >
-              <AyahList surah={surah} />
+              <div>
+                <AyahList surah={surah} />
+              </div>
             </Suspense>
             {/* Navigation */}
             <div className="flex justify-between gap-4 mb-6">
