@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import AyahCard from "../AyahCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,21 +9,49 @@ import { toBengaliNumber } from "@/lib/utils";
 
 export default function AyahList({ surah }: any) {
   const parentRef = useRef<HTMLDivElement | null>(null);
-  const hasBismillah = surah.surahNo !== 1;
+  
+  // Show Bismillah for all surahs except:
+  // - Surah 1 (Al-Fatiha): Bismillah is part of first ayah
+  // - Surah 9 (At-Tawbah): No Bismillah data available
+  const hasBismillah = surah.surahNo !== 1 && surah.surahNo !== 9 && surah.preBismillah?.text?.arab;
   const totalItems = 1 + (hasBismillah ? 1 : 0) + surah.verses.length;
 
   const rowVirtualizer = useVirtualizer({
     count: totalItems,
     getScrollElement: () => parentRef.current,
     estimateSize: (index) => {
-      if (index === 0) return 300;
-      if (hasBismillah && index === 1) return 150;
-      return 150;
+      if (index === 0) return 300; // Header
+      if (index === 1 && hasBismillah) return 150; // Bismillah
+      return 150; // Ayah cards
     },
     overscan: 5,
   });
 
+  // Handle hash navigation (e.g., #ayah-2)
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash) {
+      const match = hash.match(/#ayah-(\d+)/);
+      if (match) {
+        const ayahNumber = parseInt(match[1]);
+        const ayahIndex = ayahNumber - 1;
+        
+        // Calculate the virtual index (account for header and bismillah)
+        const virtualIndex = (hasBismillah ? 2 : 1) + ayahIndex;
+        
+        // Wait for initial render, then scroll to the ayah
+        setTimeout(() => {
+          rowVirtualizer.scrollToIndex(virtualIndex, {
+            align: 'start',
+            behavior: 'smooth',
+          });
+        }, 300);
+      }
+    }
+  }, [hasBismillah, rowVirtualizer]);
+
   const getItemContent = (index: number) => {
+    // First item: Surah Header
     if (index === 0) {
       return (
         <div className="pt-[5.3rem] md:pt-[5.8rem]">
@@ -68,28 +96,28 @@ export default function AyahList({ surah }: any) {
       );
     }
 
-    if (hasBismillah && index === 1) {
+    // Second item (if applicable): Bismillah
+    if (index === 1 && hasBismillah) {
       return (
         <div className="text-center pb-4 md:pb-6">
           <p className="text-3xl sm:text-4xl leading-loose">
-            {surah?.preBismillah?.text?.arab ||
-              "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ"}
+            {surah.preBismillah.text.arab}
           </p>
           <p className="text-xl mt-2">
-            {surah?.preBismillah?.text?.transliteration?.en ||
-              "Bismillāhir Raḥmānir Raḥīm"}
+            {surah.preBismillah.text.transliteration.en}
           </p>
           <p className="text-sm mt-2">পরম করুণাময় অসীম দয়ালু আল্লাহর নামে</p>
         </div>
       );
     }
 
+    // Remaining items: Ayah cards
     const ayahIndex = hasBismillah ? index - 2 : index - 1;
     const ayah = surah.verses[ayahIndex];
     const ayahNumber = ayahIndex + 1;
 
     return (
-      <div>
+      <div id={`ayah-${ayahNumber}`}>
         <AyahCard
           ayah={ayah}
           ayahNumber={ayahNumber}
