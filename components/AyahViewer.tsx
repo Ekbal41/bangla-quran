@@ -84,7 +84,7 @@ const AyahViewer: React.FC<AyahViewerProps> = ({
             {ayahWords.map((word, idx) => (
               <div
                 key={idx}
-                className="inline-flex flex-col items-center gap-1 p-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 relative group cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                className="inline-flex active:bg-emerald-50 focus:bg-emerald-50 flex-col items-center gap-1 p-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 relative group cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 onClick={() => playWordAudio(idx)}
               >
                 <span

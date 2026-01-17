@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ChevronLeft, MapPin, BookOpen } from "lucide-react";
+import { ChevronLeft, MapPin, BookOpen, Loader, Loader2 } from "lucide-react";
 import { toBengaliNumber } from "@/lib/utils";
 import AyahList from "./ui/AyahList";
 import { Suspense } from "react";
@@ -12,20 +12,20 @@ export default function SurahClientView({ surah }: { surah: any }) {
     <div className="min-h-screen p-4 sm:p-6 lg:p-8">
       <div className="max-w-4xl mx-auto">
         <div className="fixed w-full left-0 right-0 top-16 z-50">
-          <Card className="rounded-none dark:bg-gray-800 p-4 rounded-br-xl rounded-bl-xl flex-row flex flex-wrap justify-between items-center max-w-4xl mx-auto">
+          <Card className="rounded-none shadow-none dark:bg-gray-800 p-4 rounded-br-xl rounded-bl-xl flex-row flex flex-wrap justify-between items-center max-w-4xl mx-auto">
             {/* Back Button */}
             <Link href="/" prefetch>
               <Button variant="outline" className="group">
                 <ChevronLeft className="w-4 h-4 mr-1 group-hover:-translate-x-1 transition-transform" />
                 <span className="hidden md:inline">সূরা তালিকায় ফিরুন</span>
-                <span className="md:hidden">Back</span>
+                <span className="md:hidden">পিছনে</span>
               </Button>
             </Link>
             <FontControls />
           </Card>
         </div>
         {/* Surah Header */}
-        <Card className="mb-6 mt-18 md:mt-16 dark:bg-gray-800">
+        <Card className="mb-6 mt-18 md:mt-16 dark:bg-gray-800 shadow-none">
           <CardHeader className="text-center space-y-4 pb-6">
             <div className="w-16 h-16 mx-auto rounded-full flex items-center bg-emerald-600 justify-center text-white text-2xl font-bold">
               {toBengaliNumber(surah.surahNo)}
@@ -69,20 +69,26 @@ export default function SurahClientView({ surah }: { surah: any }) {
         {/* Bismillah */}
         {surah.surahNo !== 1 && surah.surahNo !== 9 && (
           <div className="text-center mb-8">
-            <p className="text-3xl sm:text-4xl text-gray-800 dark:text-gray-200 leading-loose">
+            <p className="text-3xl sm:text-4xl leading-loose">
               {surah.preBismillah.text.arab}
             </p>
-            <p className="text-xl text-gray-600 dark:text-gray-400 mt-2">
+            <p className="text-xl mt-2">
               {surah.preBismillah.text.transliteration.en}
             </p>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+            <p className="text-sm mt-2">
               পরম করুণাময় অসীম দয়ালু আল্লাহর নামে
             </p>
           </div>
         )}
 
         {/* Ayahs */}
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense
+          fallback={
+            <div className="w-full flex justify-center py-12">
+              <Loader2 className="w-8 h-8 animate-spin text-emerald-600" />
+            </div>
+          }
+        >
           <AyahList surah={surah} />
         </Suspense>
 

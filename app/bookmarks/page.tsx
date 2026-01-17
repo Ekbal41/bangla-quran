@@ -139,28 +139,25 @@ export default function BookmarksPage() {
         ) : (
           <div className="space-y-4">
             {bookmarks.map((bookmark, index) => (
-              <Card
-                key={bookmark.key}
-                className={`group hover:shadow-lg p-0 transition-all duration-200 dark:bg-gray-800 ${
-                  index === 0
-                    ? "border-emerald-200/30 dark:border-emerald-800"
-                    : ""
-                }`}
+              <Link
+                key={index}
+                href={
+                  bookmark.ayahNo
+                    ? `/surah/${bookmark.surahNo}#ayah-${bookmark.ayahNo}`
+                    : `/surah/${bookmark.surahNo}`
+                }
+                className="block"
               >
-                <CardContent className="p-4">
-                  <div className="flex items-start justify-between flex-wrap gap-4">
-                    <div>
-                      <Link
-                        href={
-                          bookmark.ayahNo
-                            ? `/surah/${bookmark.surahNo}#ayah-${bookmark.ayahNo}`
-                            : `/surah/${bookmark.surahNo}`
-                        }
-                        className="block hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
-                      >
+                <Card
+                  key={bookmark.key}
+                  className={`group shadow-none hover:shadow-lg p-0 transition-all duration-200 dark:bg-gray-800`}
+                >
+                  <CardContent className="p-4">
+                    <div className="flex items-start justify-between flex-wrap gap-4">
+                      <div>
                         <div className="flex items-start gap-3">
                           <div
-                            className={`flex text-xl items-center justify-center w-14 h-14 rounded-sm text-emerald-700 dark:text-emerald-400 font-bold flex-shrink-0 bg-emerald-50 dark:bg-emerald-900/20`}
+                            className={`flex text-xl items-center justify-center w-14 h-14 rounded-sm text-emerald-700 dark:text-emerald-100 font-bold flex-shrink-0 bg-emerald-50 dark:bg-emerald-500/50`}
                           >
                             {toBengaliNumber(bookmark.surahNo)}
                           </div>
@@ -170,7 +167,7 @@ export default function BookmarksPage() {
                                 surahNames[bookmark.surahNo] ||
                                 `সূরা ${bookmark.surahNo}`}
                               {bookmark.ayahNo && (
-                                <span className="ml-2 inline-flex items-center gap-1 text-sm font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-full">
+                                <span className="ml-2 inline-flex items-center gap-1 text-sm font-medium border border-emerald-500/50 text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-full">
                                   <BookOpen className="w-3 h-3" />
                                   আয়াত {bookmark.ayahNo}
                                 </span>
@@ -193,22 +190,26 @@ export default function BookmarksPage() {
                             </div>
                           </div>
                         </div>
-                      </Link>
+                      </div>
+                      <div className="flex items-center gap-4 justify-end w-full md:w-fit">
+                        {index === 0 && (
+                          <Badge className="!rounded-md h-8">
+                            সর্বশেষ সংরক্ষিত
+                          </Badge>
+                        )}
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => removeBookmark(bookmark.key)}
+                          className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 flex-shrink-0"
+                        >
+                          <Trash2 className="w-4 h-4" /> মুছুন
+                        </Button>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-4 justify-end w-full md:w-fit">
-                      {index === 0 && <Badge>সর্বশেষ সংরক্ষিত</Badge>}
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => removeBookmark(bookmark.key)}
-                        className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 flex-shrink-0"
-                      >
-                        <Trash2 className="w-4 h-4" /> মুছুন
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         )}

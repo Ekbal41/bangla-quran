@@ -14,14 +14,14 @@ export function FontControls() {
 
   return (
     <div className="flex items-center gap-2">
-      <Button size="sm" variant="outline" onClick={decreaseArabicFont}>
+      <Button size="icon" variant="outline" onClick={decreaseArabicFont}>
         <Minus className="w-4 h-4" />
       </Button>
       <span className="text-sm w-12 text-center">{arabicFontSize}px</span>
-      <Button size="sm" variant="outline" onClick={increaseArabicFont}>
+      <Button size="icon" variant="outline" onClick={increaseArabicFont}>
         <Plus className="w-4 h-4" />
       </Button>
-      <Button size="sm" variant="ghost" onClick={resetArabicFont}>
+      <Button size="icon" variant="ghost" onClick={resetArabicFont}>
         <RotateCcw className="w-4 h-4" />
       </Button>
     </div>

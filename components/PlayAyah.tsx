@@ -30,16 +30,18 @@ export default function PlayAyah({ audio }: { audio: any }) {
       <Button
         variant="outline"
         size="sm"
-        className="flex items-center gap-1"
+        className="flex items-center gap-1 !max-w-8 md:!max-w-none"
         onClick={() => togglePlay()}
       >
         {playingAyah ? (
           <>
-            <Pause className="w-4 h-4" /> বিরতি
+            <Pause className="w-4 h-4" />
+            <span className="hidden md:inline">বিরতি</span>
           </>
         ) : (
           <>
-            <Play className="w-4 h-4" /> চালু করুন
+            <Play className="w-4 h-4" />
+            <span className="hidden md:inline">চালু করুন </span>
           </>
         )}
       </Button>

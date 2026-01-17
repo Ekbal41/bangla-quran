@@ -18,10 +18,10 @@ export default function AyahBookmark({
   const [isBookmarked, setIsBookmarked] = useState(() => {
     if (typeof window !== "undefined") {
       const bookmarks = JSON.parse(
-        localStorage.getItem("quran-bookmarks") || "[]"
+        localStorage.getItem("quran-bookmarks") || "[]",
       );
       return bookmarks.some(
-        (b: any) => b.surahNo === surahNo && b.ayahNo === ayahNo
+        (b: any) => b.surahNo === surahNo && b.ayahNo === ayahNo,
       );
     }
     return false;
@@ -29,11 +29,11 @@ export default function AyahBookmark({
 
   const toggleBookmark = () => {
     const bookmarks = JSON.parse(
-      localStorage.getItem("quran-bookmarks") || "[]"
+      localStorage.getItem("quran-bookmarks") || "[]",
     );
     const bookmarkKey = `surah-${surahNo}-ayah-${ayahNo}`;
     const existingIndex = bookmarks.findIndex(
-      (b: any) => b.surahNo === surahNo && b.ayahNo === ayahNo
+      (b: any) => b.surahNo === surahNo && b.ayahNo === ayahNo,
     );
 
     if (existingIndex !== -1) {
@@ -59,14 +59,16 @@ export default function AyahBookmark({
       variant="outline"
       size={"sm"}
       onClick={toggleBookmark}
-      className={`${
+      className={`!max-w-8 md:!max-w-none ${
         isBookmarked
           ? "text-yellow-600 hover:text-yellow-700 dark:text-yellow-500"
           : ""
       }`}
     >
-      <Bookmark className={`size-4 ${isBookmarked ? "fill-current" : ""}`} />{" "}
-      {isBookmarked ? "বুকমার্ক করা হয়েছে" : "বুকমার্ক করুন"}
+      <Bookmark className={`size-4 ${isBookmarked ? "fill-current" : ""}`} />
+      <span className="hidden md:inline">
+        {isBookmarked ? "বুকমার্ক করা হয়েছে" : "বুকমার্ক করুন"}
+      </span>
     </Button>
   );
 }

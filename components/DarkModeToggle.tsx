@@ -1,35 +1,27 @@
 "use client";
 
+import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Bookmark, Moon, Sun } from "lucide-react";
 import Link from "next/link";
 
 export default function ModeToggleAndBookmark() {
-  const [darkMode, setDarkMode] = useState(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("darkMode") === "true";
-    }
-    return false;
-  });
-  const [bookmarkCount, setBookmarkCount] = useState(() => {
-    if (typeof window !== "undefined") {
-      const bookmarks = JSON.parse(
-        localStorage.getItem("quran-bookmarks") || "[]"
-      );
-      return bookmarks.length;
-    }
-  });
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const [bookmarkCount, setBookmarkCount] = useState(0);
 
   useEffect(() => {
-    const isDark = localStorage.getItem("darkMode") === "true";
-    if (isDark) {
-      document.documentElement.classList.add("dark");
-    }
+    setMounted(true);
+
+    const bookmarks = JSON.parse(
+      localStorage.getItem("quran-bookmarks") || "[]",
+    );
+    setBookmarkCount(bookmarks.length);
 
     const handleStorage = () => {
       const bookmarks = JSON.parse(
-        localStorage.getItem("quran-bookmarks") || "[]"
+        localStorage.getItem("quran-bookmarks") || "[]",
       );
       setBookmarkCount(bookmarks.length);
     };
@@ -43,17 +35,7 @@ export default function ModeToggleAndBookmark() {
     };
   }, []);
 
-  const toggleDarkMode = () => {
-    const newMode = !darkMode;
-    setDarkMode(newMode);
-    localStorage.setItem("darkMode", String(newMode));
-
-    if (newMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  };
+  if (!mounted) return null;
 
   return (
     <>
@@ -73,10 +55,14 @@ export default function ModeToggleAndBookmark() {
       </Link>
       <Button
         variant="ghost"
-        onClick={toggleDarkMode}
+        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
         className="text-white hover:bg-white/10 hover:text-white"
       >
-        {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+        {theme === "dark" ? (
+          <Sun className="w-5 h-5" />
+        ) : (
+          <Moon className="w-5 h-5" />
+        )}
       </Button>
     </>
   );
