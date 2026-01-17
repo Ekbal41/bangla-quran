@@ -15,7 +15,9 @@ export default function Navbar() {
             prefetch
           >
             <img src="/quran.png" alt="আল-কুরআন" className="size-9" />
-            <span className="text-xl font-bold hidden sm:block">আল-কুরআন - up0</span>
+            <span className="text-xl font-bold hidden sm:block">
+              আল-কুরআন - 0.0.3
+            </span>
           </Link>
 
           {/* Navigation Links */}

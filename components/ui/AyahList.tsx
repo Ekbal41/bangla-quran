@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useCallback } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import AyahCard from "../AyahCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,31 +16,80 @@ export default function AyahList({ surah }: any) {
     count: totalItems,
     getScrollElement: () => parentRef.current,
     estimateSize: (index) => {
-      if (index === 0) return 350;
-      if (hasBismillah && index === 1) return 180;
-      return 150;
+      if (index === 0) return 400;
+      if (hasBismillah && index === 1) return 200;
+      return 200;
     },
-    overscan: 5,
+    overscan: 15,
   });
 
-  useEffect(() => {
-    const hash = window.location.hash;
-    if (hash) {
-      const match = hash.match(/#ayah-(\d+)/);
-      if (match) {
-        const ayahNumber = parseInt(match[1]);
-        const ayahIndex = ayahNumber - 1;
-        const virtualIndex = (hasBismillah ? 2 : 1) + ayahIndex;
-        
-        setTimeout(() => {
-          rowVirtualizer.scrollToIndex(virtualIndex, {
-            align: 'start',
-            behavior: 'smooth',
+  const scrollToAyah = useCallback(
+    (ayahNumber: number) => {
+      if (ayahNumber < 1 || ayahNumber > surah.verses.length) return;
+
+      const virtualIndex = (hasBismillah ? 2 : 1) + (ayahNumber - 1);
+
+      rowVirtualizer.scrollToIndex(virtualIndex, {
+        align: "start",
+        behavior: "auto",
+      });
+
+      setTimeout(() => {
+        const element = document.getElementById(`ayah-${ayahNumber}`);
+        if (element && parentRef.current) {
+          const container = parentRef.current;
+          const elementRect = element.getBoundingClientRect();
+          const containerRect = container.getBoundingClientRect();
+          const scrollTop = container.scrollTop;
+          const elementTop = elementRect.top - containerRect.top + scrollTop;
+
+          container.scrollTo({
+            top: elementTop - 200,
+            behavior: "smooth",
           });
-        }, 100);
+
+          element.classList.add(
+            "bg-yellow-50",
+            "dark:bg-yellow-900/20",
+            "ring-2",
+            "ring-yellow-400",
+            "rounded-xl",
+            "mx-0.5"
+          );
+
+          setTimeout(() => {
+            element.classList.remove(
+              "bg-yellow-50",
+              "dark:bg-yellow-900/20",
+              "ring-2",
+              "ring-yellow-400",
+              "mx-0.5"
+            );
+          }, 2000);
+
+          window.history.replaceState(null, "", `#ayah-${ayahNumber}`);
+        }
+      }, 100);
+    },
+    [rowVirtualizer, surah.verses.length, hasBismillah]
+  );
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      if (hash) {
+        const match = hash.match(/#ayah-(\d+)/);
+        if (match) {
+          const ayahNumber = parseInt(match[1]);
+          setTimeout(() => scrollToAyah(ayahNumber), 100);
+        }
       }
-    }
-  }, [hasBismillah, rowVirtualizer]);
+    };
+
+    handleHashChange();
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, [scrollToAyah]);
 
   const getItemContent = (index: number) => {
     if (index === 0) {
@@ -108,7 +157,7 @@ export default function AyahList({ surah }: any) {
     const ayahNumber = ayahIndex + 1;
 
     return (
-      <div id={`ayah-${ayahNumber}`}>
+      <div id={`ayah-${ayahNumber}`} className="scroll-mt-28">
         <AyahCard
           ayah={ayah}
           ayahNumber={ayahNumber}
@@ -123,10 +172,7 @@ export default function AyahList({ surah }: any) {
     <div
       ref={parentRef}
       className="h-[calc(100vh-64px)] overflow-y-auto scrollbar-hide"
-      style={{
-        scrollbarWidth: "none",
-        msOverflowStyle: "none",
-      }}
+      style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
       <div
         style={{
@@ -135,25 +181,23 @@ export default function AyahList({ surah }: any) {
           position: "relative",
         }}
       >
-        {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-          return (
-            <div
-              key={virtualRow.index}
-              data-index={virtualRow.index}
-              ref={rowVirtualizer.measureElement}
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                transform: `translateY(${virtualRow.start}px)`,
-              }}
-              className="pb-4 md:pb-6"
-            >
-              {getItemContent(virtualRow.index)}
-            </div>
-          );
-        })}
+        {rowVirtualizer.getVirtualItems().map((virtualRow) => (
+          <div
+            key={virtualRow.index}
+            data-index={virtualRow.index}
+            ref={rowVirtualizer.measureElement}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              transform: `translateY(${virtualRow.start}px)`,
+            }}
+            className="pb-4 md:pb-6"
+          >
+            {getItemContent(virtualRow.index)}
+          </div>
+        ))}
       </div>
     </div>
   );
