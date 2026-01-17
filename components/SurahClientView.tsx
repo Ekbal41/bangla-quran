@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ChevronLeft, MapPin, BookOpen, Book } from "lucide-react";
 import AyahBookmark from "@/components/AyahBookmark";
 import AyahViewer from "./AyahViewer";
-import PlayAyah from "./PlayAyah";
+// import PlayAyah from "./PlayAyah";
 import { toBengaliNumber } from "@/lib/utils";
 
 export default function SurahClientView({ surah }: { surah: any }) {
@@ -97,7 +97,7 @@ export default function SurahClientView({ surah }: { surah: any }) {
                       {toBengaliNumber(ayahNumber)}
                     </p>
                     <div className="flex items-center gap-3">
-                      <PlayAyah audio={ayah?.audio} />
+                      {/* <PlayAyah audio={ayah?.audio} /> */}
                       <AyahBookmark
                         surahNo={surah.surahNo}
                         ayahNo={ayahNumber}
