@@ -47,7 +47,7 @@ const AyahCard = memo(
         <CardContent className="px-6 space-y-4">
           <div className="flex flex-wrap gap-4 items-center justify-between mb-4">
             <p className="text-2xl font-bold">{toBengaliNumber(ayahNumber)}</p>
-            <div className="flex items-center justify-end w-full md:w-fit gap-3">
+            <div className="flex items-center flex-wrap justify-end w-full md:w-fit gap-3">
               <Button
                 onClick={() => setShowWordByWord(!showWordByWord)}
                 variant="outline"
