@@ -20,11 +20,11 @@ export default function BookmarksPage() {
   const [bookmarks, setBookmarks] = useState<BookmarkType[]>(() => {
     if (typeof window !== "undefined") {
       const stored = JSON.parse(
-        localStorage.getItem("quran-bookmarks") || "[]",
+        localStorage.getItem("quran-bookmarks") || "[]"
       );
       return stored.sort(
         (a: BookmarkType, b: BookmarkType) =>
-          new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+          new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
       );
     }
     return [];
@@ -39,7 +39,7 @@ export default function BookmarksPage() {
         const data = await res.json();
         const names: Record<number, string> = {};
         data.forEach((s: any, index: number) => {
-          names[index + 1] = s.surahNameTranslation;
+          names[index + 1] = s.surahName;
         });
         setSurahNames(names);
       } catch (err) {
@@ -49,11 +49,11 @@ export default function BookmarksPage() {
 
     const fetchBookmarks = () => {
       const stored = JSON.parse(
-        localStorage.getItem("quran-bookmarks") || "[]",
+        localStorage.getItem("quran-bookmarks") || "[]"
       );
       const sorted = stored.sort(
         (a: BookmarkType, b: BookmarkType) =>
-          new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+          new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
       );
       setBookmarks(sorted);
     };
@@ -63,11 +63,11 @@ export default function BookmarksPage() {
 
     const handleUpdate = () => {
       const stored = JSON.parse(
-        localStorage.getItem("quran-bookmarks") || "[]",
+        localStorage.getItem("quran-bookmarks") || "[]"
       );
       const sorted = stored.sort(
         (a: BookmarkType, b: BookmarkType) =>
-          new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+          new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
       );
       setBookmarks(sorted);
     };
@@ -80,7 +80,7 @@ export default function BookmarksPage() {
     const updated = bookmarks.filter((b) => b.key !== key);
     const sorted = updated.sort(
       (a: BookmarkType, b: BookmarkType) =>
-        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
     );
     setBookmarks(sorted);
     localStorage.setItem("quran-bookmarks", JSON.stringify(sorted));
@@ -97,9 +97,9 @@ export default function BookmarksPage() {
 
   return (
     <div className="min-h-screen p-4 sm:p-6 lg:p-8">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-start justify-between mb-8">
           <div>
             <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">
               আমার বুকমার্ক
@@ -157,9 +157,9 @@ export default function BookmarksPage() {
                       <div>
                         <div className="flex items-start gap-3">
                           <div
-                            className={`flex text-xl items-center justify-center w-14 h-14 rounded-sm text-emerald-700 dark:text-emerald-100 font-bold flex-shrink-0 bg-emerald-50 dark:bg-emerald-500/50`}
+                            className={`hidden md:flex text-xl items-center justify-center w-14 h-14 rounded-sm text-emerald-700 dark:text-emerald-100 font-bold flex-shrink-0 bg-emerald-50 dark:bg-emerald-500/50`}
                           >
-                            {toBengaliNumber(bookmark.surahNo)}
+                            <BookOpen className="w-7 h-7" />
                           </div>
                           <div className="space-y-2">
                             <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
@@ -168,8 +168,8 @@ export default function BookmarksPage() {
                                 `সূরা ${bookmark.surahNo}`}
                               {bookmark.ayahNo && (
                                 <span className="ml-2 inline-flex items-center gap-1 text-sm font-medium border border-emerald-500/50 text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-full">
-                                  <BookOpen className="w-3 h-3" />
-                                  আয়াত {bookmark.ayahNo}
+                                  সূরা {toBengaliNumber(bookmark.surahNo)} /
+                                  আয়াত {toBengaliNumber(bookmark.ayahNo)}
                                 </span>
                               )}
                             </h3>
@@ -178,7 +178,7 @@ export default function BookmarksPage() {
                               <Calendar className="w-3 h-3" />
                               <time dateTime={bookmark.timestamp}>
                                 {new Date(
-                                  bookmark.timestamp,
+                                  bookmark.timestamp
                                 ).toLocaleDateString("bn-BD", {
                                   year: "numeric",
                                   month: "long",
@@ -191,19 +191,14 @@ export default function BookmarksPage() {
                           </div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-4 justify-end w-full md:w-fit">
-                        {index === 0 && (
-                          <Badge className="!rounded-md h-8">
-                            সর্বশেষ সংরক্ষিত
-                          </Badge>
-                        )}
+                      <div className="flex items-center gap-4 justify-end">
                         <Button
                           variant="outline"
-                          size="sm"
+                          size="icon"
                           onClick={() => removeBookmark(bookmark.key)}
                           className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 flex-shrink-0"
                         >
-                          <Trash2 className="w-4 h-4" /> মুছুন
+                          <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
                     </div>

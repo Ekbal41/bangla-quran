@@ -6,7 +6,7 @@ import ModeToggleAndBookmark from "./DarkModeToggle";
 export default function Navbar() {
   return (
     <nav className="sticky top-0 z-50 bg-emerald-600 dark:bg-emerald-800 text-white shadow-lg">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-0">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link
@@ -25,8 +25,8 @@ export default function Navbar() {
                 variant="ghost"
                 className="text-white hover:text-white hover:bg-white/10"
               >
-                <Home className="w-5 h-5 sm:mr-2" />
-                <span className="hidden sm:inline">হোম</span>
+                <Home className="w-5 h-5" />
+                <span className="hidden sm:inline font-semibold">হোম</span>
               </Button>
             </Link>
             <ModeToggleAndBookmark />

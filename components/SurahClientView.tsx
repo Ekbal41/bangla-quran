@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ChevronLeft, MapPin, BookOpen, Loader, Loader2 } from "lucide-react";
+import { ChevronLeft, MapPin, BookOpen, Loader2 } from "lucide-react";
 import { toBengaliNumber } from "@/lib/utils";
 import AyahList from "./ui/AyahList";
 import { Suspense } from "react";
@@ -10,9 +10,9 @@ import { FontControls } from "./FontControls";
 export default function SurahClientView({ surah }: { surah: any }) {
   return (
     <div className="min-h-screen p-4 sm:p-6 lg:p-8">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <div className="fixed w-full left-0 right-0 top-16 z-50">
-          <Card className="rounded-none shadow-none dark:bg-gray-800 p-4 rounded-br-xl rounded-bl-xl flex-row flex flex-wrap justify-between items-center max-w-4xl mx-auto">
+          <Card className="rounded-none shadow-none dark:bg-gray-800 p-4 rounded-br-xl rounded-bl-xl flex-row flex flex-wrap justify-between items-center max-w-5xl mx-auto">
             {/* Back Button */}
             <Link href="/" prefetch>
               <Button variant="outline" className="group">
@@ -25,7 +25,7 @@ export default function SurahClientView({ surah }: { surah: any }) {
           </Card>
         </div>
         {/* Surah Header */}
-        <Card className="mb-6 mt-18 md:mt-16 dark:bg-gray-800 shadow-none">
+        <Card className="mb-4 md:mb-6 mt-18 md:mt-16 dark:bg-gray-800 shadow-none">
           <CardHeader className="text-center space-y-4 pb-6">
             <div className="w-16 h-16 mx-auto rounded-full flex items-center bg-emerald-600 justify-center text-white text-2xl font-bold">
               {toBengaliNumber(surah.surahNo)}
@@ -41,7 +41,7 @@ export default function SurahClientView({ surah }: { surah: any }) {
             </CardTitle>
             <p className="text-2xl font-semibold">
               {surah.nameTransliteration}
-              <span className="text-xl ms-2  font-semibold">
+              <span className="text-xl ms-2 !font-normal text-gray-600 dark:text-gray-400">
                 ({surah.surahNameTranslation})
               </span>
             </p>

@@ -17,7 +17,6 @@ import {
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 const AyahCard = memo(
   ({
@@ -58,7 +57,7 @@ const AyahCard = memo(
         >
           <CardContent className="px-6 space-y-4">
             <div className="flex flex-wrap gap-4 items-center justify-between mb-4">
-              <p className="md:text-2xl font-bold">
+              <p className="text-xl md:text-2xl font-bold">
                 {toBengaliNumber(ayahNumber)}
               </p>
               <div className="flex items-center flex-wrap justify-end gap-3">
@@ -131,7 +130,7 @@ const AyahCard = memo(
           >
             <div className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
               <div className="px-4 py-3 md:px-8 md:py-4">
-                <div className="flex items-center flex-wrap justify-between gap-4 max-w-7xl mx-auto">
+                <div className="flex items-center flex-wrap justify-between gap-4 max-w-5xl mx-auto">
                   <div className="min-w-0">
                     <h2 className="text-xl md:text-2xl font-bold truncate">
                       {surah.surahName}
@@ -197,7 +196,7 @@ const AyahCard = memo(
                 </div>
               </div>
             </div>
-            <div className="h-full overflow-y-auto pt-24 md:pt-32">
+            <div className="h-full overflow-y-auto pt-24 md:pt-28">
               <div className="px-6 md:px-12 pb-12">
                 <div className="max-w-5xl mx-auto">
                   <Suspense
@@ -222,7 +221,7 @@ const AyahCard = memo(
         </Sheet>
       </>
     );
-  },
+  }
 );
 
 AyahCard.displayName = "AyahCard";

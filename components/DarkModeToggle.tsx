@@ -8,20 +8,20 @@ import Link from "next/link";
 
 export default function ModeToggleAndBookmark() {
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  const [bookmarkCount, setBookmarkCount] = useState(0);
+  const [bookmarkCount, setBookmarkCount] = useState(() => {
+    if (typeof window !== "undefined") {
+      const bookmarks = JSON.parse(
+        localStorage.getItem("quran-bookmarks") || "[]"
+      );
+      return bookmarks.length;
+    }
+    return 0;
+  });
 
   useEffect(() => {
-    setMounted(true);
-
-    const bookmarks = JSON.parse(
-      localStorage.getItem("quran-bookmarks") || "[]",
-    );
-    setBookmarkCount(bookmarks.length);
-
     const handleStorage = () => {
       const bookmarks = JSON.parse(
-        localStorage.getItem("quran-bookmarks") || "[]",
+        localStorage.getItem("quran-bookmarks") || "[]"
       );
       setBookmarkCount(bookmarks.length);
     };
@@ -35,8 +35,6 @@ export default function ModeToggleAndBookmark() {
     };
   }, []);
 
-  if (!mounted) return null;
-
   return (
     <>
       <Link href="/bookmarks">
@@ -44,8 +42,8 @@ export default function ModeToggleAndBookmark() {
           variant="ghost"
           className="text-white hover:text-white hover:bg-white/10 relative"
         >
-          <Bookmark className="w-5 h-5 sm:mr-2" />
-          <span className="hidden sm:inline">বুকমার্ক</span>
+          <Bookmark className="w-5 h-5" />
+          <span className="hidden sm:inline font-semibold">বুকমার্ক</span>
           {bookmarkCount > 0 && (
             <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
               {bookmarkCount}
@@ -59,9 +57,15 @@ export default function ModeToggleAndBookmark() {
         className="text-white hover:bg-white/10 hover:text-white"
       >
         {theme === "dark" ? (
-          <Sun className="w-5 h-5" />
+          <span className="flex items-center gap-2">
+            <Sun className="w-5 h-5" />
+            <span className="hidden sm:inline font-semibold">লাইট মোড</span>
+          </span>
         ) : (
-          <Moon className="w-5 h-5" />
+          <span className="flex items-center gap-2">
+            <Moon className="w-5 h-5" />
+            <span className="hidden sm:inline font-semibold">ডার্ক মোড </span>
+          </span>
         )}
       </Button>
     </>

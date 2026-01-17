@@ -4,7 +4,7 @@ import AyahCard from "../AyahCard";
 
 export default function AyahList({ surah }: any) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       {surah.verses.map((ayah: any, index: number) => {
         const ayahNumber = index + 1;
         return (

@@ -80,7 +80,7 @@ const AyahViewer: React.FC<AyahViewerProps> = ({
     <div className="space-y-4">
       <div>
         {showWordByWord && ayahWords.length > 0 ? (
-          <div className="flex flex-wrap gap-2 justify-start" dir="rtl">
+          <div className="flex flex-wrap gap-2 md:gap-4 justify-start" dir="rtl">
             {ayahWords.map((word, idx) => (
               <div
                 key={idx}
