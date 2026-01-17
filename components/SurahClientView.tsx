@@ -11,7 +11,7 @@ export default function SurahClientView({ surah }: { surah: any }) {
   return (
     <div className="min-h-screen p-4 sm:p-6 lg:p-8">
       <div className="max-w-4xl mx-auto">
-        <div className="fixed w-full left-0 right-0 top-16">
+        <div className="fixed w-full left-0 right-0 top-16 z-50">
           <Card className="rounded-none dark:bg-gray-800 p-4 rounded-br-xl rounded-bl-xl flex-row flex flex-wrap justify-between items-center max-w-4xl mx-auto">
             {/* Back Button */}
             <Link href="/" prefetch>
