@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   experimental: {
     // Required to fix the build error for 'use cache'
-    dynamicIO: true,
+    
     cacheComponents: true,
     viewTransition: true,
     // Fixes the "heavy" back-button by keeping the list in browser memory
