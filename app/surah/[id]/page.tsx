@@ -1,4 +1,4 @@
-'use cache'; 
+
 
 import SurahClientView from "@/components/SurahClientView";
 
@@ -13,6 +13,7 @@ export async function generateStaticParams() {
 }
 
 export default async function SurahPage({ params }: PageProps) {
+  'use cache'; 
   const { id } = await params;
 
   const [res1, res2] = await Promise.all([
