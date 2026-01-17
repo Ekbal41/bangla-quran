@@ -1,7 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
-import { Button } from "./ui/button";
-import { AArrowDown, AArrowUp } from "lucide-react";
+import { useQuranStore } from "@/lib/store/useQuranStore";
 
 const AyahViewer = ({
   ayah,
@@ -13,35 +11,10 @@ const AyahViewer = ({
   index: number;
 }) => {
   const verse = surah.verses[index];
-  const [arabicFontSize, setArabicFontSize] = useState(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("arabicFontSize");
-      if (saved) return Number(saved);
-    }
-    return 30;
-  });
-  useEffect(() => {
-    localStorage.setItem("arabicFontSize", arabicFontSize.toString());
-  }, [arabicFontSize]);
+  const { arabicFontSize } = useQuranStore();
 
   return (
     <div>
-      <div className="mb-2 flex justify-end gap-2">
-        <Button
-          variant={"outline"}
-          size={"icon"}
-          onClick={() => setArabicFontSize((size) => Math.max(12, size - 2))}
-        >
-          <AArrowDown className="size-5" />
-        </Button>
-        <Button
-          variant={"outline"}
-          size={"icon"}
-          onClick={() => setArabicFontSize((size) => size + 2)}
-        >
-          <AArrowUp className="size-5" />
-        </Button>
-      </div>
       <div
         className="text-right font-arabic leading-loose text-gray-900 dark:text-gray-100"
         style={{ fontSize: arabicFontSize }}

@@ -1,10 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ChevronLeft, MapPin, BookOpen, Book } from "lucide-react";
+import { ChevronLeft, MapPin, BookOpen } from "lucide-react";
 import { toBengaliNumber } from "@/lib/utils";
 import AyahList from "./ui/AyahList";
 import { Suspense } from "react";
+import { FontControls } from "./FontControls";
 
 export default function SurahClientView({ surah }: { surah: any }) {
   return (
@@ -20,19 +21,15 @@ export default function SurahClientView({ surah }: { surah: any }) {
                 <span className="md:hidden">Back</span>
               </Button>
             </Link>
-            <p className="text-lg font-semibold flex items-center">
-              <Book className="w-5 h-5 inline-block mr-2 text-emerald-600 dark:text-emerald-400" />
-              {surah.surahNameTranslation}
-            </p>
+            <FontControls />
           </Card>
         </div>
         {/* Surah Header */}
-        <Card className="mb-6 mt-18 md:mt-16">
+        <Card className="mb-6 mt-18 md:mt-16 dark:bg-gray-800">
           <CardHeader className="text-center space-y-4 pb-6">
             <div className="w-16 h-16 mx-auto rounded-full flex items-center bg-emerald-600 justify-center text-white text-2xl font-bold">
               {toBengaliNumber(surah.surahNo)}
             </div>
-
             <CardTitle className="text-3xl sm:text-4xl leading-loose">
               <p
                 style={{
@@ -40,7 +37,6 @@ export default function SurahClientView({ surah }: { surah: any }) {
                 }}
               >
                 {surah.surahNameArabic}
-                {`surah-title-${surah.surahNo}`}
               </p>
             </CardTitle>
             <p className="text-2xl font-semibold">
@@ -91,7 +87,7 @@ export default function SurahClientView({ surah }: { surah: any }) {
         </Suspense>
 
         {/* Navigation */}
-        <div className="flex justify-between mt-8 gap-4">
+        <div className="flex justify-between mt-8 mb-4 gap-4">
           {surah.surahNo > 1 && (
             <Link href={`/surah/${surah.surahNo - 1}`} prefetch>
               <Button variant="outline" className="flex-1">

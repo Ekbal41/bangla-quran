@@ -30,7 +30,11 @@ export default async function Home() {
           {surahs.map((s: any, index: number) => (
             <Card
               key={index}
+              id={`surah-${index + 1}`}
               className="group hover:shadow-xl hover:scale-[1.02] transition-all duration-300 border-2 border-transparent hover:border-emerald-500/20 dark:bg-gray-800 dark:border-gray-700"
+              style={{
+                scrollMarginTop: "9.5rem",
+              }}
             >
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
@@ -50,7 +54,7 @@ export default async function Home() {
                           viewTransitionName: `surah-title-${index + 1}`,
                         }}
                       >
-                        {s.surahNameArabic} {`surah-title-${index + 1}`}
+                        {s.surahNameArabic}
                       </p>
                     </CardTitle>
                     <p className="text-lg font-semibold text-right mt-1">
