@@ -1,4 +1,4 @@
-'use cache';
+
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { toBengaliNumber } from "@/lib/utils";
 
 export default async function Home() {
+  'use cache';
   const res = await fetch("https://quranapi.pages.dev/api/surah.json", {
     cache: "force-cache",
   });
