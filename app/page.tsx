@@ -1,10 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import Link from "next/link";
 import { BookOpen, MapPin } from "lucide-react";
 import BookmarkButton from "@/components/BookmarkButton";
@@ -50,7 +45,13 @@ export default async function Home() {
                       <BookmarkButton surahNo={index + 1} />
                     </div>
                     <CardTitle className="text-xl sm:text-2xl text-right leading-loose">
-                      {s.surahNameArabic}
+                      <p
+                        style={{
+                          viewTransitionName: `surah-title-${index + 1}`,
+                        }}
+                      >
+                        {s.surahNameArabic} {`surah-title-${index + 1}`}
+                      </p>
                     </CardTitle>
                     <p className="text-lg font-semibold text-right mt-1">
                       {s.surahName}
@@ -71,23 +72,11 @@ export default async function Home() {
                     <span>{s.totalAyah} আয়াত</span>
                   </div>
                 </div>
-
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Link
-                      href={`/surah/${index + 1}`}
-                      className="block"
-                      prefetch
-                    >
-                      <Button className="w-full dark:text-gray-200 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-700 dark:hover:bg-emerald-600 transition-colors">
-                        সূরা পড়ুন
-                      </Button>
-                    </Link>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>সম্পূর্ণ সূরা পড়তে ক্লিক করুন</p>
-                  </TooltipContent>
-                </Tooltip>
+                <Link href={`/surah/${index + 1}`} className="block" prefetch>
+                  <Button className="w-full focus:scale-110 active:scale-95 dark:text-gray-200 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-700 dark:hover:bg-emerald-600 transition-all duration-200 ease-out">
+                    সূরা পড়ুন
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           ))}

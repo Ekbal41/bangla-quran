@@ -2,10 +2,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ChevronLeft, MapPin, BookOpen, Book } from "lucide-react";
-import AyahBookmark from "@/components/AyahBookmark";
-import AyahViewer from "./AyahViewer";
-// import PlayAyah from "./PlayAyah";
 import { toBengaliNumber } from "@/lib/utils";
+import AyahList from "./ui/AyahList";
+import { Suspense } from "react";
 
 export default function SurahClientView({ surah }: { surah: any }) {
   return (
@@ -35,7 +34,14 @@ export default function SurahClientView({ surah }: { surah: any }) {
             </div>
 
             <CardTitle className="text-3xl sm:text-4xl leading-loose">
-              {surah.surahNameArabicLong || surah.surahNameArabic}
+              <p
+                style={{
+                  viewTransitionName: `surah-title-${surah.surahNo}`,
+                }}
+              >
+                {surah.surahNameArabic}
+                {`surah-title-${surah.surahNo}`}
+              </p>
             </CardTitle>
             <p className="text-2xl font-semibold">
               {surah.nameTransliteration}
@@ -80,7 +86,9 @@ export default function SurahClientView({ surah }: { surah: any }) {
         )}
 
         {/* Ayahs */}
-       
+        <Suspense fallback={<div>Loading...</div>}>
+          <AyahList surah={surah} />
+        </Suspense>
 
         {/* Navigation */}
         <div className="flex justify-between mt-8 gap-4">
