@@ -2,16 +2,16 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   experimental: {
+    // Required to fix the build error for 'use cache'
+    dynamicIO: true,
+    cacheComponents: true,
     viewTransition: true,
-    // Add this block to fix the "heavy" back button
+    // Fixes the "heavy" back-button by keeping the list in browser memory
     staleTimes: {
-      dynamic: 300, // Keep in memory for 5 minutes
-      static: 1800,  // Keep SSG pages for 30 minutes
+      dynamic: 300, 
+      static: 1800,
     },
   },
-  // Note: cacheComponents is usually an experimental flag
-  experimental: {
-    dynamicIO: true, // Required for 'use cache' in 2026
-  }
 };
+
 export default nextConfig;
