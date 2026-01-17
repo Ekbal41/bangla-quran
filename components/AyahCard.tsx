@@ -6,7 +6,7 @@ import { toBengaliNumber } from "@/lib/utils";
 import AyahBookmark from "./AyahBookmark";
 import AyahViewer from "./AyahViewer";
 import PlayAyah from "./PlayAyah";
-import { Copy, Check } from "lucide-react";
+import { Copy, Check, EyeOff, Eye } from "lucide-react";
 import { Button } from "./ui/button";
 
 const AyahCard = memo(
@@ -22,6 +22,7 @@ const AyahCard = memo(
     index: number;
   }) => {
     const [copied, setCopied] = useState(false);
+    const [showWordByWord, setShowWordByWord] = useState(false);
 
     const handleCopy = async () => {
       const textToCopy = `${ayah?.text?.arab} (${ayah?.text?.transliteration.en})`;
@@ -47,6 +48,24 @@ const AyahCard = memo(
           <div className="flex flex-wrap gap-4 items-center justify-between mb-4">
             <p className="text-2xl font-bold">{toBengaliNumber(ayahNumber)}</p>
             <div className="flex items-center justify-end w-full md:w-fit gap-3">
+              <Button
+                onClick={() => setShowWordByWord(!showWordByWord)}
+                variant="outline"
+                size="sm"
+                className="gap-2"
+              >
+                {showWordByWord ? (
+                  <>
+                    <EyeOff className="w-4 h-4" />
+                    আয়াত অনুবাদ
+                  </>
+                ) : (
+                  <>
+                    <Eye className="w-4 h-4" />
+                    শব্দ অনুযায়ী
+                  </>
+                )}
+              </Button>
               <PlayAyah audio={ayah.audio} />
               <Suspense fallback={null}>
                 <AyahBookmark
@@ -70,7 +89,15 @@ const AyahCard = memo(
               </Button>
             </div>
           </div>
-          <AyahViewer ayah={ayah?.text.arab} surah={surah} index={index} />
+          <Suspense fallback={null}>
+            <AyahViewer
+              ayah={ayah?.text.arab}
+              surah={surah}
+              ayahNumber={index}
+              surahNumber={surah.surahNo}
+              showWordByWord={showWordByWord}
+            />
+          </Suspense>
         </CardContent>
       </Card>
     );
