@@ -1,3 +1,5 @@
+'use cache'; 
+
 import SurahClientView from "@/components/SurahClientView";
 
 interface PageProps {
