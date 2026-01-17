@@ -82,7 +82,7 @@ export default function SurahClientView({ surah }: { surah: any }) {
         )}
 
         {/* Ayahs */}
-        {/* <Suspense
+        <Suspense
           fallback={
             <div className="w-full flex justify-center py-12">
               <Loader2 className="w-8 h-8 animate-spin text-emerald-600" />
@@ -90,7 +90,7 @@ export default function SurahClientView({ surah }: { surah: any }) {
           }
         >
           <AyahList surah={surah} />
-        </Suspense> */}
+        </Suspense>
 
         {/* Navigation */}
         <div className="flex justify-between mt-8 mb-4 gap-4">
