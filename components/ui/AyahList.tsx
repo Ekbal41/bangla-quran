@@ -94,7 +94,7 @@ export default function AyahList({ surah }: any) {
   const getItemContent = (index: number) => {
     if (index === 0) {
       return (
-        <div className="pt-[5.3rem] md:pt-[5.8rem]">
+        <div>
           <Card className="dark:bg-gray-800 shadow-none">
             <CardHeader className="text-center space-y-4 pb-6">
               <div className="w-16 h-16 mx-auto rounded-full flex items-center bg-emerald-600 justify-center text-white text-2xl font-bold">
@@ -171,7 +171,7 @@ export default function AyahList({ surah }: any) {
   return (
     <div
       ref={parentRef}
-      className="h-[calc(100vh-64px)] overflow-y-auto scrollbar-hide"
+      className="h-[calc(100dvh-64px)] overflow-y-auto scrollbar-hide pt-[5.3rem] md:pt-[5.8rem] pb-[4.4rem] md:pb-[4.5rem]"
       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
       <div

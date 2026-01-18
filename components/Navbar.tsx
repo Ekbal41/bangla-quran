@@ -16,7 +16,7 @@ export default function Navbar() {
           >
             <img src="/quran.png" alt="আল-কুরআন" className="size-9" />
             <span className="text-xl font-bold hidden sm:block">
-              আল-কুরআন - 0.0.4
+              আল-কুরআন - 0.0.5
             </span>
           </Link>
 
