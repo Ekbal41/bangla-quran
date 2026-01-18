@@ -5,7 +5,7 @@ import { Card, CardContent } from "./ui/card";
 import { toBengaliNumber } from "@/lib/utils";
 import AyahBookmark from "./AyahBookmark";
 import AyahViewer from "./AyahViewer";
-import PlayAyah from "./PlayAyah";
+import PlayAyah from "./PlayAudio";
 import {
   Copy,
   Check,
@@ -14,9 +14,14 @@ import {
   Maximize2,
   Minimize2,
   Loader2,
+  Pause,
+  Play,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
+import PlayAudio from "./PlayAudio";
+import { useAudioPlayer } from "./hooks/useAudioPlayer";
+import { Badge } from "./ui/badge";
 
 const AyahCard = memo(
   ({
@@ -33,6 +38,15 @@ const AyahCard = memo(
     const [copied, setCopied] = useState(false);
     const [showWordByWord, setShowWordByWord] = useState(false);
     const [isFullscreen, setIsFullscreen] = useState(false);
+    const { isPlaying, progress, duration, toggle, seek, isReady } =
+      useAudioPlayer(ayah?.audio?.primary);
+    const formatTime = (seconds: number) => {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs.toString().padStart(2, "0")}`;
+    };
+
+    const progressPercent = duration > 0 ? (progress / duration) * 100 : 0;
 
     const handleCopy = async () => {
       const textToCopy = `${ayah?.text?.arab} (${ayah?.text?.transliteration.en})`;
@@ -48,19 +62,51 @@ const AyahCard = memo(
     return (
       <>
         <Card
-          className="group hover:shadow-xl transition-all duration-300 dark:bg-gray-800"
+          className="group relative overflow-hidden hover:shadow-xl transition-all duration-300 dark:bg-gray-800"
           id={`ayah-${ayahNumber}`}
           title={`ayah-${ayahNumber}`}
           style={{
             scrollMarginTop: "9.5rem",
           }}
         >
+          {isPlaying && (
+            <div className="absolute top-0 left-0 right-0 bg-gray-50 dark:bg-gray-800/50">
+              <div className="flex items-center gap-3">
+                <div className="flex-1 relative group">
+                  <div className="h-0.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-emerald-500 to-emerald-600 transition-all duration-150 ease-out"
+                      style={{ width: `${progressPercent}%` }}
+                    />
+                  </div>
+                  <input
+                    type="range"
+                    min={0}
+                    max={duration || 0}
+                    step={0.1}
+                    value={progress}
+                    onChange={(e) => seek(Number(e.target.value))}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    disabled={!isReady}
+                    aria-label="Audio progress"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
           <CardContent className="px-6 space-y-4">
             <div className="flex flex-wrap gap-4 items-center justify-between mb-4">
               <p className="text-xl md:text-2xl font-bold">
                 {toBengaliNumber(ayahNumber)}
               </p>
               <div className="flex items-center flex-wrap justify-end gap-3">
+                {isPlaying && (
+                  <div className="hidden md:inline">
+                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                      {formatTime(progress)} / {formatTime(duration)}
+                    </span>
+                  </div>
+                )}
                 <Button
                   onClick={() => setShowWordByWord(!showWordByWord)}
                   variant="outline"
@@ -79,8 +125,25 @@ const AyahCard = memo(
                     </>
                   )}
                 </Button>
-
-                <PlayAyah audio={ayah.audio} />
+                <Button
+                  onClick={toggle}
+                  disabled={!isReady}
+                  variant={"outline"}
+                  size="sm"
+                  className="!max-w-8 md:!max-w-none"
+                >
+                  {isPlaying ? (
+                    <>
+                      <Pause className="w-4 h-4" />
+                      <span className="hidden md:inline">বিরতি</span>
+                    </>
+                  ) : (
+                    <>
+                      <Play className="w-4 h-4" />
+                      <span className="hidden md:inline">চালু করুন</span>
+                    </>
+                  )}
+                </Button>
                 <Suspense fallback={null}>
                   <AyahBookmark
                     surahNo={surah.surahNo}
@@ -129,6 +192,31 @@ const AyahCard = memo(
             className="h-[100dvh] w-full p-0 max-w-none"
           >
             <div className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
+              {isPlaying && (
+                <div className="absolute bottom-0 left-0 right-0 bg-gray-50 dark:bg-gray-800/50">
+                  <div className="flex items-center gap-3">
+                    <div className="flex-1 relative group">
+                      <div className="h-0.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-gradient-to-r from-emerald-500 to-emerald-600 transition-all duration-150 ease-out"
+                          style={{ width: `${progressPercent}%` }}
+                        />
+                      </div>
+                      <input
+                        type="range"
+                        min={0}
+                        max={duration || 0}
+                        step={0.1}
+                        value={progress}
+                        onChange={(e) => seek(Number(e.target.value))}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                        disabled={!isReady}
+                        aria-label="Audio progress"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
               <div className="px-4 py-3 md:px-8 md:py-4">
                 <div className="flex items-center flex-wrap justify-between gap-4 max-w-5xl mx-auto">
                   <div className="min-w-0">
@@ -140,6 +228,13 @@ const AyahCard = memo(
                     </p>
                   </div>
                   <div className="flex items-center gap-2 flex-shrink-0">
+                    {isPlaying && (
+                      <div>
+                        <span className="text-sm text-gray-500 dark:text-gray-400">
+                          {formatTime(progress)} / {formatTime(duration)}
+                        </span>
+                      </div>
+                    )}
                     <Button
                       onClick={() => setShowWordByWord(!showWordByWord)}
                       variant="outline"
@@ -160,7 +255,25 @@ const AyahCard = memo(
                         </>
                       )}
                     </Button>
-                    <PlayAyah audio={ayah.audio} />
+                    <Button
+                      onClick={toggle}
+                      disabled={!isReady}
+                      variant={"outline"}
+                      size="sm"
+                      className="!max-w-8 md:!max-w-none"
+                    >
+                      {isPlaying ? (
+                        <>
+                          <Pause className="w-4 h-4" />
+                          <span className="hidden md:inline">বিরতি</span>
+                        </>
+                      ) : (
+                        <>
+                          <Play className="w-4 h-4" />
+                          <span className="hidden md:inline">চালু করুন</span>
+                        </>
+                      )}
+                    </Button>
                     <div className="hidden md:block">
                       <Suspense fallback={null}>
                         <AyahBookmark

@@ -6,8 +6,8 @@ import Link from "next/link";
 import { ChevronLeft, Loader2 } from "lucide-react";
 import AyahList from "./ui/AyahList";
 import { Suspense, useEffect } from "react";
-import { FontControls } from "./FontControls";
 import { usePathname } from "next/navigation";
+import SurahToolbar from "./SurahToolbar";
 
 export default function SurahClientView({ surah }: { surah: any }) {
   const pathname = usePathname();
@@ -18,17 +18,7 @@ export default function SurahClientView({ surah }: { surah: any }) {
   return (
     <div className="h-[calc(100dvh-64px)] flex flex-col overflow-hidden">
       <div className="fixed w-full left-0 right-0 top-16 z-50">
-        <Card className="rounded-none shadow-none dark:bg-gray-800 p-4 rounded-br-xl rounded-bl-xl flex-row flex flex-wrap justify-between items-center max-w-5xl mx-auto">
-          {/* Back Button */}
-          <Link href="/" prefetch>
-            <Button variant="outline" className="group">
-              <ChevronLeft className="w-4 h-4 mr-1 group-hover:-translate-x-1 transition-transform" />
-              <span className="hidden md:inline">সূরা তালিকায় ফিরুন</span>
-              <span className="md:hidden">পিছনে</span>
-            </Button>
-          </Link>
-          <FontControls />
-        </Card>
+        <SurahToolbar surah={surah} />
       </div>
       <div className="flex-1 overflow-hidden">
         <div
@@ -49,7 +39,7 @@ export default function SurahClientView({ surah }: { surah: any }) {
             </Suspense>
             {/* Navigation */}
             <div className="fixed bottom-0 left-0 right-0 w-full">
-              <Card className="max-w-5xl mx-auto w-full p-0 rounded-b-none dark:bg-gray-800">
+              <Card className="max-w-5xl mx-auto w-full p-0 rounded-b-none">
                 <div className="flex justify-between gap-4 p-4">
                   {surah.surahNo > 1 && (
                     <Link href={`/surah/${surah.surahNo - 1}`} prefetch>
