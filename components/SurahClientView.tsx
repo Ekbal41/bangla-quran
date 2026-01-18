@@ -49,7 +49,7 @@ export default function SurahClientView({ surah }: { surah: any }) {
             </Suspense>
             {/* Navigation */}
             <div className="fixed bottom-0 left-0 right-0 w-full">
-              <Card className="max-w-5xl mx-auto w-full p-0 rounded-b-none">
+              <Card className="max-w-5xl mx-auto w-full p-0 rounded-b-none dark:bg-gray-800">
                 <div className="flex justify-between gap-4 p-4">
                   {surah.surahNo > 1 && (
                     <Link href={`/surah/${surah.surahNo - 1}`} prefetch>
