@@ -54,7 +54,7 @@ export default function AyahList({ surah }: any) {
             "ring-2",
             "ring-yellow-400",
             "rounded-xl",
-            "mx-0.5"
+            "mx-0.5",
           );
 
           setTimeout(() => {
@@ -63,7 +63,7 @@ export default function AyahList({ surah }: any) {
               "dark:bg-yellow-900/20",
               "ring-2",
               "ring-yellow-400",
-              "mx-0.5"
+              "mx-0.5",
             );
           }, 2000);
 
@@ -71,7 +71,7 @@ export default function AyahList({ surah }: any) {
         }
       }, 100);
     },
-    [rowVirtualizer, surah.verses.length, hasBismillah]
+    [rowVirtualizer, surah.verses.length, hasBismillah],
   );
 
   useEffect(() => {

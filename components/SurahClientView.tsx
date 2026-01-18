@@ -1,12 +1,20 @@
+"use client";
+
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ChevronLeft, Loader2 } from "lucide-react";
 import AyahList from "./ui/AyahList";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { FontControls } from "./FontControls";
+import { usePathname } from "next/navigation";
 
 export default function SurahClientView({ surah }: { surah: any }) {
+  const pathname = usePathname();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   return (
     <div className="h-screen flex flex-col overflow-hidden">
       <div className="fixed w-full left-0 right-0 top-16 z-50">
@@ -40,7 +48,7 @@ export default function SurahClientView({ surah }: { surah: any }) {
               </div>
             </Suspense>
             {/* Navigation */}
-            <div className="flex justify-between gap-4 mb-6">
+            <div className="flex justify-between gap-4 my-4 md:my-6">
               {surah.surahNo > 1 && (
                 <Link href={`/surah/${surah.surahNo - 1}`} prefetch>
                   <Button variant="outline" className="flex-1">

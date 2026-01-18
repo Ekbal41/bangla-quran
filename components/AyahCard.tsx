@@ -126,7 +126,7 @@ const AyahCard = memo(
         <Sheet open={isFullscreen} onOpenChange={setIsFullscreen}>
           <SheetContent
             side="bottom"
-            className="h-[100vh] w-full p-0 max-w-none"
+            className="h-[100dvh] w-full p-0 max-w-none"
           >
             <div className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
               <div className="px-4 py-3 md:px-8 md:py-4">
@@ -221,7 +221,7 @@ const AyahCard = memo(
         </Sheet>
       </>
     );
-  }
+  },
 );
 
 AyahCard.displayName = "AyahCard";
