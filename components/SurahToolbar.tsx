@@ -2,16 +2,9 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import { ChevronLeft, Play, Pause, Volume2, MicVocal } from "lucide-react";
+import { ChevronLeft, Play, Pause, MicVocal, Settings } from "lucide-react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
 import { FontControls } from "./FontControls";
 import { useAudioPlayer } from "./hooks/useAudioPlayer";
 import {
@@ -21,12 +14,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "./ui/dialog";
+import { useQuranStore } from "@/lib/store/useQuranStore";
 
 export default function SurahToolbar({ surah }: { surah: any }) {
   const audioMap = useMemo(() => surah?.audio ?? {}, [surah]);
   const reciterKeys = useMemo(() => Object.keys(audioMap), [audioMap]);
   const [reciterKey, setReciterKey] = useState<string>(reciterKeys[0] ?? "");
   const [mobileModalOpen, setMobileModalOpen] = useState(false);
+  const { arabicFontSize } = useQuranStore();
   const selectedAudio = audioMap[reciterKey];
   const { isPlaying, progress, duration, toggle, seek, isReady } =
     useAudioPlayer(selectedAudio?.originalUrl);
@@ -46,13 +41,13 @@ export default function SurahToolbar({ surah }: { surah: any }) {
               <Link href="/" prefetch>
                 <Button
                   variant="outline"
-                  className="group !max-w-8 md:!max-w-none hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
+                  className="group hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
                 >
                   <ChevronLeft className="w-4 h-4 mr-1 transition-transform group-hover:-translate-x-1" />
                   <span className="hidden sm:inline">সূরা তালিকায় ফিরুন</span>
+                  <span className="inline sm:hidden">পিছনে</span>
                 </Button>
               </Link>
-              <FontControls />
               {isPlaying && (
                 <div className="hidden md:inline">
                   <span className="text-sm text-gray-500 dark:text-gray-400">
@@ -63,50 +58,45 @@ export default function SurahToolbar({ surah }: { surah: any }) {
             </div>
             <div className="flex gap-3 items-center">
               <div className="flex items-center gap-2">
-                <MicVocal className="w-4 h-4 text-gray-500 dark:text-gray-400 hidden sm:block" />
-                <div className="hidden md:block">
-                  <Select value={reciterKey} onValueChange={setReciterKey}>
-                    <SelectTrigger className="bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-                      <SelectValue placeholder="রেকিটার নির্বাচন করুন" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {reciterKeys.map((key) => (
-                        <SelectItem key={key} value={key}>
-                          {audioMap[key]?.reciter}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="md:hidden">
+                <div>
                   <Dialog
                     open={mobileModalOpen}
                     onOpenChange={setMobileModalOpen}
                   >
                     <DialogTrigger asChild>
                       <Button variant={"outline"} size="icon">
-                        <MicVocal className="w-4 h-4" />
+                        <Settings className="w-4 h-4" />
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-xs">
-                      <DialogHeader>
-                        <DialogTitle>রেকিটার নির্বাচন করুন</DialogTitle>
-                      </DialogHeader>
-                      <div className="flex flex-col gap-2 mt-2">
-                        {reciterKeys.map((key) => (
-                          <Button
-                            key={key}
-                            variant={reciterKey === key ? "default" : "outline"}
-                            onClick={() => {
-                              setReciterKey(key);
-                              setMobileModalOpen(false);
-                            }}
-                            className="justify-start"
-                          >
-                            <MicVocal className="w-4 h-4" />
-                            {audioMap[key]?.reciter}
-                          </Button>
-                        ))}
+                    <DialogContent className="sm:max-w-md">
+                      <div className="mb-3 mt-3">
+                        <p className="block mb-3 text-sm font-medium">
+                          ফন্ট নিয়ন্ত্রণ করুন ({arabicFontSize}px)
+                        </p>
+                        <FontControls />
+                      </div>
+                      <div>
+                        <p className="block mb-3 text-sm font-medium">
+                          রেকিটার নির্বাচন করুন
+                        </p>
+                        <div className="flex flex-col gap-2">
+                          {reciterKeys.map((key) => (
+                            <Button
+                              key={key}
+                              variant={
+                                reciterKey === key ? "default" : "outline"
+                              }
+                              onClick={() => {
+                                setReciterKey(key);
+                                setMobileModalOpen(false);
+                              }}
+                              className="justify-start"
+                            >
+                              <MicVocal className="w-4 h-4" />
+                              {audioMap[key]?.reciter}
+                            </Button>
+                          ))}
+                        </div>
                       </div>
                     </DialogContent>
                   </Dialog>
@@ -116,12 +106,16 @@ export default function SurahToolbar({ surah }: { surah: any }) {
                 onClick={toggle}
                 disabled={!isReady}
                 className="bg-emerald-600 hover:bg-emerald-700 text-white"
-                size="icon"
+                size="sm"
               >
                 {isPlaying ? (
-                  <Pause className="w-4 h-4" />
+                  <span className="flex gap-2 items-center">
+                    <Pause className="w-4 h-4" /> সুরাহ থমান
+                  </span>
                 ) : (
-                  <Play className="w-4 h-4" />
+                  <span className="flex gap-2 items-center">
+                    <Play className="w-4 h-4" /> সুরাহ শুনুন
+                  </span>
                 )}
               </Button>
             </div>

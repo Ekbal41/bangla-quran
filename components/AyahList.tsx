@@ -1,16 +1,28 @@
 "use client";
 
-import { useRef, useEffect, useCallback } from "react";
+import { useRef, useEffect, useCallback, useState } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MapPin, BookOpen } from "lucide-react";
+import { MapPin, BookOpen, TextSearch, ArrowUpRight } from "lucide-react";
 import { toBengaliNumber } from "@/lib/utils";
 import AyahCard from "./AyahCard";
+import { Button } from "./ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import { ScrollArea } from "./ui/scroll-area";
 
 export default function AyahList({ surah }: any) {
   const parentRef = useRef<HTMLDivElement | null>(null);
   const hasBismillah = surah.surahNo !== 1;
   const totalItems = 1 + (hasBismillah ? 1 : 0) + surah.verses.length;
+  const [open, setOpen] = useState(false);
 
   const rowVirtualizer = useVirtualizer({
     count: totalItems,
@@ -97,8 +109,10 @@ export default function AyahList({ surah }: any) {
         <div>
           <Card className="dark:bg-gray-800 shadow-none">
             <CardHeader className="text-center space-y-4 pb-6">
-              <div className="w-16 h-16 mx-auto rounded-full flex items-center bg-gradient-to-br from-emerald-500
-               to-teal-600 shadow justify-center text-white text-2xl font-bold">
+              <div
+                className="w-16 h-16 mx-auto rounded-full flex items-center bg-gradient-to-br from-emerald-500
+               to-teal-600 shadow justify-center text-white text-2xl font-bold"
+              >
                 {toBengaliNumber(surah.surahNo)}
               </div>
               <CardTitle className="text-3xl sm:text-4xl leading-loose">
@@ -170,35 +184,86 @@ export default function AyahList({ surah }: any) {
   };
 
   return (
-    <div
-      ref={parentRef}
-      className="h-[calc(100dvh-64px)] overflow-y-auto scrollbar-hide pt-[5.3rem] md:pt-[5.8rem] pb-[4.4rem] md:pb-[4.5rem]"
-      style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-    >
+    <div className="relative">
+      <div className="absolute bottom-0 right-0 bg-lime-500 left-0">
+        <Dialog open={open} onOpenChange={setOpen}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <DialogTrigger asChild>
+                <Button
+                  className="w-14 h-14 rounded-full flex items-center justify-center
+                   bg-linear-to-br from-emerald-600 to-emerald-800
+                   text-white text-2xl font-bold shadow-lg absolute bottom-20 right-4 z-50"
+                >
+                  <TextSearch className="size-6" />
+                </Button>
+              </DialogTrigger>
+            </TooltipTrigger>
+            <TooltipContent side="left">আয়াত অনুসন্ধান করুন</TooltipContent>
+          </Tooltip>
+          <DialogContent className="p-4 overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <TextSearch />
+                নির্বাচন করুন আয়াত
+              </DialogTitle>
+            </DialogHeader>
+            <ScrollArea className="h-[60vh]">
+              <div className="grid grid-cols-4 gap-4">
+                {Array.from({ length: totalItems }).map((_, index) => {
+                  const ayahIndex = hasBismillah ? index - 2 : index - 1;
+                  if (index === 0 || (hasBismillah && index === 1)) return null;
+                  return (
+                    <Card
+                      key={index}
+                      className="flex flex-col shadow-none bg-gray-50 cursor-pointer items-center gap-2 justify-start w-full px-4 py-2 text-gray-800 dark:text-gray-100
+                     not-last:hover:bg-emerald-50 dark:hover:bg-emerald-900/30 transition-colors rounded-lg"
+                      onClick={() => {
+                        scrollToAyah(ayahIndex + 1);
+                        setOpen(false);
+                      }}
+                    >
+                      <p className="flex-1 text-xl font-extrabold">
+                        {toBengaliNumber(ayahIndex + 1)}
+                      </p>
+                    </Card>
+                  );
+                })}
+              </div>
+            </ScrollArea>
+          </DialogContent>
+        </Dialog>
+      </div>
       <div
-        style={{
-          height: `${rowVirtualizer.getTotalSize()}px`,
-          width: "100%",
-          position: "relative",
-        }}
+        ref={parentRef}
+        className="relative h-[calc(100dvh-64px)] overflow-y-auto scrollbar-hide pt-[5.3rem] md:pt-[5.8rem] pb-[4.4rem] md:pb-[4.5rem]"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
-        {rowVirtualizer.getVirtualItems().map((virtualRow) => (
-          <div
-            key={virtualRow.index}
-            data-index={virtualRow.index}
-            ref={rowVirtualizer.measureElement}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              transform: `translateY(${virtualRow.start}px)`,
-            }}
-            className="pb-4 md:pb-6"
-          >
-            {getItemContent(virtualRow.index)}
-          </div>
-        ))}
+        <div
+          style={{
+            height: `${rowVirtualizer.getTotalSize()}px`,
+            width: "100%",
+            position: "relative",
+          }}
+        >
+          {rowVirtualizer.getVirtualItems().map((virtualRow) => (
+            <div
+              key={virtualRow.index}
+              data-index={virtualRow.index}
+              ref={rowVirtualizer.measureElement}
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                transform: `translateY(${virtualRow.start}px)`,
+              }}
+              className="pb-4 md:pb-6"
+            >
+              {getItemContent(virtualRow.index)}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
