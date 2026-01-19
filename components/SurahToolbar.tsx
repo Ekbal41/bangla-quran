@@ -46,11 +46,10 @@ export default function SurahToolbar({ surah }: { surah: any }) {
               <Link href="/" prefetch>
                 <Button
                   variant="outline"
-                  className="group hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
+                  className="group !max-w-8 md:!max-w-none hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
                 >
                   <ChevronLeft className="w-4 h-4 mr-1 transition-transform group-hover:-translate-x-1" />
                   <span className="hidden sm:inline">সূরা তালিকায় ফিরুন</span>
-                  <span className="sm:hidden">পিছনে</span>
                 </Button>
               </Link>
               <FontControls />

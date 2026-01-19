@@ -2,10 +2,10 @@
 
 import { useRef, useEffect, useCallback } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import AyahCard from "../AyahCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MapPin, BookOpen } from "lucide-react";
 import { toBengaliNumber } from "@/lib/utils";
+import AyahCard from "./AyahCard";
 
 export default function AyahList({ surah }: any) {
   const parentRef = useRef<HTMLDivElement | null>(null);
@@ -97,7 +97,8 @@ export default function AyahList({ surah }: any) {
         <div>
           <Card className="dark:bg-gray-800 shadow-none">
             <CardHeader className="text-center space-y-4 pb-6">
-              <div className="w-16 h-16 mx-auto rounded-full flex items-center bg-emerald-600 justify-center text-white text-2xl font-bold">
+              <div className="w-16 h-16 mx-auto rounded-full flex items-center bg-gradient-to-br from-emerald-500
+               to-teal-600 shadow justify-center text-white text-2xl font-bold">
                 {toBengaliNumber(surah.surahNo)}
               </div>
               <CardTitle className="text-3xl sm:text-4xl leading-loose">

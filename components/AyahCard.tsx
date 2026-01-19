@@ -5,7 +5,6 @@ import { Card, CardContent } from "./ui/card";
 import { toBengaliNumber } from "@/lib/utils";
 import AyahBookmark from "./AyahBookmark";
 import AyahViewer from "./AyahViewer";
-import PlayAyah from "./PlayAudio";
 import {
   Copy,
   Check,
@@ -19,9 +18,7 @@ import {
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
-import PlayAudio from "./PlayAudio";
 import { useAudioPlayer } from "./hooks/useAudioPlayer";
-import { Badge } from "./ui/badge";
 
 const AyahCard = memo(
   ({
@@ -62,7 +59,7 @@ const AyahCard = memo(
     return (
       <>
         <Card
-          className="group relative overflow-hidden hover:shadow-xl transition-all duration-300 dark:bg-gray-800"
+          className="relative overflow-hidden hover:shadow-xl transition-all duration-300 dark:bg-gray-800"
           id={`ayah-${ayahNumber}`}
           title={`ayah-${ayahNumber}`}
           style={{
@@ -175,7 +172,13 @@ const AyahCard = memo(
                 </Button>
               </div>
             </div>
-            <Suspense fallback={null}>
+            <Suspense
+              fallback={
+                <div className="w-full flex justify-center py-12">
+                  <Loader2 className="w-8 h-8 animate-spin text-emerald-600" />
+                </div>
+              }
+            >
               <AyahViewer
                 ayah={ayah?.text.arab}
                 surah={surah}
@@ -310,7 +313,7 @@ const AyahCard = memo(
               </div>
             </div>
             <div className="h-full overflow-y-auto pt-24 md:pt-28">
-              <div className="px-6 md:px-12 pb-12">
+              <div className="px-6 md:px-12 pb-4 md:pb-8">
                 <div className="max-w-5xl mx-auto">
                   <Suspense
                     fallback={

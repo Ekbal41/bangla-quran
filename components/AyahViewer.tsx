@@ -2,7 +2,10 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useQuranStore } from "@/lib/store/useQuranStore";
-import { Volume2, Loader2 } from "lucide-react";
+import { Volume2, Loader2, Pause, AudioLines, Activity } from "lucide-react";
+import { Badge } from "./ui/badge";
+import { toBengaliNumber } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 interface Word {
   c: string;
@@ -80,34 +83,49 @@ const AyahViewer: React.FC<AyahViewerProps> = ({
     <div className="space-y-4">
       <div>
         {showWordByWord && ayahWords.length > 0 ? (
-          <div className="flex flex-wrap gap-2 md:gap-4 justify-start" dir="rtl">
+          <div
+            className="flex flex-wrap gap-2 md:gap-4 justify-start"
+            dir="rtl"
+          >
             {ayahWords.map((word, idx) => (
-              <div
-                key={idx}
-                className="inline-flex active:bg-emerald-50 focus:bg-emerald-50 flex-col items-center gap-1 p-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 relative group cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                onClick={() => playWordAudio(idx)}
-              >
-                <span
-                  className="font-arabic text-gray-900 dark:text-gray-100"
-                  style={{ fontSize: arabicFontSize }}
-                  dir="rtl"
-                >
-                  {word.c}
-                </span>
-                <span className="text-xs text-gray-600 dark:text-gray-400 italic">
-                  {word.d}
-                </span>
-                <span className="text-xs text-gray-700 dark:text-gray-300">
-                  {word.e}
-                </span>
-                <div className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                  {playingWordIndex === idx ? (
-                    <Loader2 className="w-3 h-3 text-blue-600 dark:text-blue-400 animate-spin" />
-                  ) : (
-                    <Volume2 className="w-3 h-3 text-gray-500 dark:text-gray-400" />
-                  )}
-                </div>
-              </div>
+              <Tooltip key={idx}>
+                <TooltipTrigger asChild>
+                  <div
+                    className={`inline-flex active:bg-emerald-50 focus:bg-emerald-50 flex-col items-center gap-1 p-4 
+                    rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/30 relative 
+                    group cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-900/50 transition-colors min-w-20
+                    ${playingWordIndex === idx && "ring-1 ring-emerald-400 bg-emerald-50"}`}
+                    onClick={() => playWordAudio(idx)}
+                  >
+                    <Badge className="absolute -left-1 text-black dark:text-gray-300 bg-transparent rounded-none rounded-tl-md rounded-br-md top-0  text-[10px]!">
+                      {toBengaliNumber(idx + 1)}
+                    </Badge>
+                    <span
+                      className="font-arabic text-gray-900 dark:text-gray-100"
+                      style={{ fontSize: arabicFontSize }}
+                      dir="rtl"
+                    >
+                      {word.c}
+                    </span>
+                    <span className="text-xs text-gray-600 dark:text-gray-400 italic">
+                      {word.d}
+                    </span>
+                    <span className="text-xs text-gray-700 dark:text-gray-300">
+                      {word.e}
+                    </span>
+                    <div className="absolute top-1 right-1">
+                      {playingWordIndex === idx ? (
+                        <AudioLines className="w-4 h-4 stroke-2 text-emerald-700" />
+                      ) : (
+                        <Volume2 className="w-3 h-3 text-black dark:text-gray-300 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity" />
+                      )}
+                    </div>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>উচ্চারণ শুনতে ক্লিক করুন</p>
+                </TooltipContent>
+              </Tooltip>
             ))}
           </div>
         ) : (

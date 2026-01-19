@@ -4,10 +4,10 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ChevronLeft, Loader2 } from "lucide-react";
-import AyahList from "./ui/AyahList";
 import { Suspense, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import SurahToolbar from "./SurahToolbar";
+import AyahList from "./AyahList";
 
 export default function SurahClientView({ surah }: { surah: any }) {
   const pathname = usePathname();
