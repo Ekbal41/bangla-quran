@@ -1,22 +1,22 @@
+import HeroContent from "@/components/HeroContent";
 import SurahList from "@/components/SurahList";
 import { Loader2 } from "lucide-react";
 import { Suspense } from "react";
 
 export default function Home() {
   return (
-    <div className="min-h-screen p-4 sm:p-6 lg:p-8">
-      <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8 sm:mb-12">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold py-2 text-gray-900 dark:text-gray-100 bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-            আল-কুরআন করীম
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base">
-            পবিত্র কুরআন শরীফ - বাংলা অনুবাদ সহ
-          </p>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-emerald-50/30 to-teal-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
+      <div className="relative overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-400/10 rounded-full blur-3xl"></div>
+          <div className="absolute -top-40 -left-40 w-80 h-80 bg-emerald-400/10 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-40 w-full h-80 bg-emerald-300/10 rounded-full blur-3xl"></div>
         </div>
-
-        {/* Surah Grid */}
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 sm:pt-16 sm:pb-20">
+          <HeroContent />
+        </div>
+      </div>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8 lg:py-12">
         <Suspense
           fallback={
             <div className="w-full flex justify-center py-12">
