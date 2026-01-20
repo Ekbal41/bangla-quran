@@ -64,7 +64,7 @@ export default async function SurahList() {
               </div>
             </div>
             <Link href={`/surah/${index + 1}`} className="block" prefetch>
-              <Button className="w-full focus:scale-110 active:scale-95 dark:text-gray-200 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-700 dark:hover:bg-emerald-600 transition-all duration-200 ease-out">
+              <Button className="w-full active:scale-95 dark:text-gray-200 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-700 dark:hover:bg-emerald-600 transition-all duration-200 ease-out">
                 সূরা পড়ুন
               </Button>
             </Link>

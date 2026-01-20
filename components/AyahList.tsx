@@ -3,14 +3,13 @@
 import { useRef, useEffect, useCallback, useState } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MapPin, BookOpen, TextSearch, ArrowUpRight } from "lucide-react";
+import { MapPin, BookOpen, TextSearch } from "lucide-react";
 import { toBengaliNumber } from "@/lib/utils";
 import AyahCard from "./AyahCard";
 import { Button } from "./ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -192,7 +191,7 @@ export default function AyahList({ surah }: any) {
               <DialogTrigger asChild>
                 <Button
                   className="w-14 h-14 rounded-full flex items-center justify-center
-                   bg-linear-to-br from-emerald-600 to-emerald-800
+                   bg-linear-to-br from-emerald-600 to-emerald-800 active:scale-90 transition-all ease-in-out duration-300
                    text-white text-2xl font-bold shadow-lg absolute bottom-20 right-4 z-50"
                 >
                   <TextSearch className="size-6" />
@@ -201,14 +200,14 @@ export default function AyahList({ surah }: any) {
             </TooltipTrigger>
             <TooltipContent side="left">আয়াত অনুসন্ধান করুন</TooltipContent>
           </Tooltip>
-          <DialogContent className="p-4 overflow-y-auto">
+          <DialogContent className="p-4">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
                 <TextSearch />
-                নির্বাচন করুন আয়াত
+                আয়াত নির্বাচন করুন
               </DialogTitle>
             </DialogHeader>
-            <ScrollArea className="h-[60vh]">
+            <ScrollArea className="max-h-[70dvh] h-fit overflow-y-auto">
               <div className="grid grid-cols-4 gap-4">
                 {Array.from({ length: totalItems }).map((_, index) => {
                   const ayahIndex = hasBismillah ? index - 2 : index - 1;
@@ -216,8 +215,8 @@ export default function AyahList({ surah }: any) {
                   return (
                     <Card
                       key={index}
-                      className="flex flex-col shadow-none bg-gray-50 cursor-pointer items-center gap-2 justify-start w-full px-4 py-2 text-gray-800 dark:text-gray-100
-                     not-last:hover:bg-emerald-50 dark:hover:bg-emerald-900/30 transition-colors rounded-lg"
+                      className="active:scale-90 flex transition-all ease-out duration-300 flex-col shadow-none bg-gray-50 dark:bg-gray-900 cursor-pointer items-center gap-2 justify-start w-full px-4 py-2 text-gray-800 dark:text-gray-100
+                     not-last:hover:bg-emerald-50 dark:hover:bg-emerald-900/30 rounded-lg"
                       onClick={() => {
                         scrollToAyah(ayahIndex + 1);
                         setOpen(false);

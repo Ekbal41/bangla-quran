@@ -94,7 +94,7 @@ const AyahViewer: React.FC<AyahViewerProps> = ({
                     className={`inline-flex active:bg-emerald-50 focus:bg-emerald-50 flex-col items-center gap-1 p-4 
                     rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/30 relative 
                     group cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-900/50 transition-colors min-w-20
-                    ${playingWordIndex === idx && "ring-1 ring-emerald-400 bg-emerald-50"}`}
+                    ${playingWordIndex === idx && "ring-1 ring-emerald-400 !bg-emerald-50/50 dark:!bg-emerald-900/30"}`}
                     onClick={() => playWordAudio(idx)}
                   >
                     <Badge className="absolute -left-1 text-black dark:text-gray-300 bg-transparent rounded-none rounded-tl-md rounded-br-md top-0  text-[10px]!">

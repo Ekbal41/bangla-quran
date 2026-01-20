@@ -24,7 +24,7 @@ export default function Navbar() {
                 variant="ghost"
                 className="text-white hover:text-white hover:bg-white/10"
               >
-                <Home className="w-5 h-5" />
+                <Home className="size-6 md:size-5" />
                 <span className="hidden sm:inline font-semibold">হোম</span>
               </Button>
             </Link>

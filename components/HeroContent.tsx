@@ -1,40 +1,32 @@
 "use client";
 
 import { BookOpen, Heart, Star } from "lucide-react";
-import { motion, Variants } from "framer-motion";
+import { motion, Variants, useReducedMotion } from "framer-motion";
 
 export default function HeroContent() {
+  const reduceMotion = useReducedMotion();
+
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.1,
-      },
+      transition: reduceMotion
+        ? { duration: 0.2 }
+        : {
+            staggerChildren: 0.08,
+            delayChildren: 0.1,
+          },
     },
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: reduceMotion ? { opacity: 0 } : { opacity: 0, y: 16 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.5,
-        ease: [0.4, 0, 0.2, 1], // easeOut cubic-bezier
-      },
-    },
-  };
-
-  const statsVariants: Variants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: [0.4, 0, 0.2, 1],
+        duration: 0.35,
+        ease: "easeOut",
       },
     },
   };
@@ -82,82 +74,49 @@ export default function HeroContent() {
           variants={itemVariants}
           className="grid grid-cols-3 gap-4 max-w-2xl mx-auto"
         >
-          <motion.div
-            variants={statsVariants}
-            whileHover={{ scale: 1.05 }}
-            className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-4 border border-gray-200 dark:border-gray-700 shadow"
-          >
-            <div className="text-2xl sm:text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-1">
-              ১১৪
+          {[
+            { value: "১১৪", label: "সূরা" },
+            { value: "৬,২৩৬", label: "আয়াত" },
+            { value: "৩০", label: "পারা" },
+          ].map((stat) => (
+            <div
+              key={stat.label}
+              className="bg-white/80 dark:bg-gray-800/80 rounded-xl p-4 border border-gray-200 dark:border-gray-700 shadow
+                         md:backdrop-blur-sm"
+            >
+              <div className="text-2xl sm:text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-1">
+                {stat.value}
+              </div>
+              <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                {stat.label}
+              </div>
             </div>
-            <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
-              সূরা
-            </div>
-          </motion.div>
-
-          <motion.div
-            variants={statsVariants}
-            whileHover={{ scale: 1.05 }}
-            className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-4 border border-gray-200 dark:border-gray-700 shadow"
-          >
-            <div className="text-2xl sm:text-3xl font-bold text-teal-600 dark:text-teal-400 mb-1">
-              ৬,২৩৬
-            </div>
-            <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
-              আয়াত
-            </div>
-          </motion.div>
-
-          <motion.div
-            variants={statsVariants}
-            whileHover={{ scale: 1.05 }}
-            className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-4 border border-gray-200 dark:border-gray-700 shadow"
-          >
-            <div className="text-2xl sm:text-3xl font-bold text-purple-600 dark:text-purple-400 mb-1">
-              ৩০
-            </div>
-            <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
-              পারা
-            </div>
-          </motion.div>
+          ))}
         </motion.div>
       </motion.div>
 
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={false}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.6, ease: [0.4, 0, 0.2, 1] }}
+        transition={{ duration: 0.3 }}
         className="flex flex-wrap justify-center gap-3 mb-8"
       >
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-full shadow border border-gray-200 dark:border-gray-700"
-        >
-          <Heart className="w-4 h-4 text-rose-500" />
-          <span className="text-sm text-gray-700 dark:text-gray-300">
-            প্রিয় সূরা
-          </span>
-        </motion.div>
-
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-full shadow border border-gray-200 dark:border-gray-700"
-        >
-          <Star className="w-4 h-4 text-amber-500" />
-          <span className="text-sm text-gray-700 dark:text-gray-300">
-            বুকমার্ক
-          </span>
-        </motion.div>
-
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-full shadow border border-gray-200 dark:border-gray-700"
-        >
-          <BookOpen className="w-4 h-4 text-emerald-500" />
-          <span className="text-sm text-gray-700 dark:text-gray-300">
-            পঠন ইতিহাস
-          </span>
-        </motion.div>
+        {[
+          { icon: Heart, text: "প্রিয় সূরা", color: "text-rose-500" },
+          { icon: Star, text: "বুকমার্ক", color: "text-amber-500" },
+          { icon: BookOpen, text: "পঠন ইতিহাস", color: "text-emerald-500" },
+        ].map(({ icon: Icon, text, color }) => (
+          <div
+            key={text}
+            className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-full shadow
+                       border border-gray-200 dark:border-gray-700"
+          >
+            <Icon className={`w-4 h-4 ${color}`} />
+            <span className="text-sm text-gray-700 dark:text-gray-300">
+              {text}
+            </span>
+          </div>
+        ))}
       </motion.div>
     </>
   );
