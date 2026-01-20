@@ -192,7 +192,7 @@ export default function AyahList({ surah }: any) {
                 <Button
                   className="w-14 h-14 rounded-full flex items-center justify-center
                    bg-linear-to-br from-emerald-600 to-emerald-800 active:scale-90 transition-all ease-in-out duration-300
-                   text-white text-2xl font-bold shadow-lg absolute bottom-20 right-4 z-50"
+                   text-white text-2xl font-bold shadow-lg absolute bottom-20 right-0 md:-right-3 xl:right-4 z-50"
                 >
                   <TextSearch className="size-6" />
                 </Button>
